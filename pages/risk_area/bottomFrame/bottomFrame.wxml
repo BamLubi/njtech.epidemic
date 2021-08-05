@@ -1,0 +1,15 @@
+<!--pages/bottomFrame/bottomFrame.wxml-->
+<view wx:if='{{flag}}'>
+  <view class='wrap {{wrapAnimate}}' style='background:rgba(0,0,0,{{bgOpacity}});'></view>
+  <view catchtap='hideFrame' class='frame-wrapper {{frameAnimate}}'>
+    <view catchtap='catchNone' class='frame'>
+      <!-- 标题 -->
+      <view class='title-wrapper flex'>
+        <view>{{frameTitle}}</view>
+        <image catchtap='hideFrame' src='../../../images/close.png' mode='widthFix'></image>
+      </view>
+      <!-- 内容 -->
+      <slot></slot>
+    </view>
+  </view>
+</view>

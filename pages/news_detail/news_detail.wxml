@@ -1,0 +1,11 @@
+<!--pages/news_detail/news_detail.wxml-->
+<view class="margin-sm padding-sm bg-white radius shadow">
+    <!-- 标题 -->
+    <view class="text-blod text-black text-xxl margin-bottom">{{news.title}}</view>
+    <!-- 内容 -->
+    <view class="text-lg text-content margin-bottom" style="white-space: pre-line;">{{news.summary}}</view>
+    <!-- 信息源 -->
+    <view class="margin-bottom">信息源: {{news.infoSource}}</view>
+    <!-- 发布时间 -->
+    <view>发布时间: {{news.pubDate}}</view>
+</view>

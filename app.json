@@ -1,0 +1,38 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/news/news",
+        "pages/news_detail/news_detail",
+        "pages/risk_area/risk_area",
+        "pages/acid_area/acid_area"
+    ],
+    "window": {
+        "backgroundColor": "#F6F6F6",
+        "backgroundTextStyle": "dark",
+        "navigationBarBackgroundColor": "#2684fe",
+        "navigationBarTitleText": "e心e力",
+        "navigationBarTextStyle": "white"
+    },
+    "tabBar": {
+        "selectedColor": "#2684fe",
+        "list": [{
+                "pagePath": "pages/index/index",
+                "text": "疫情概况",
+                "iconPath": "images/app/index.png",
+                "selectedIconPath": "images/app/index_fill.png"
+            },
+            {
+                "pagePath": "pages/news/news",
+                "text": "疫情资讯",
+                "iconPath": "images/app/news.png",
+                "selectedIconPath": "images/app/news_fill.png"
+            }
+        ]
+    },
+    "permission": {
+        "scope.userLocation": {
+            "desc": "你的位置信息将用于小程序位置接口的效果展示"
+        }
+    },
+    "sitemapLocation": "sitemap.json"
+}

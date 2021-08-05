@@ -1,0 +1,131 @@
+/* pages/risk_area/risk_area.wxss */
+/* 地图 */
+/* 定位悬浮按钮 */
+.locate{
+    position: fixed;
+    width: 90rpx;
+    height: 90rpx;
+    top: 90rpx;
+    right: 25rpx;
+    border-radius: 20rpx;
+    background-color: #2684fe;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.locate_img{
+    width: 60rpx;
+    height: 60rpx;
+}
+/* 离我最近 按钮 */
+.acid_box{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 140rpx;
+    height: 140rpx;
+    top: 55rpx;
+    left: 25rpx;
+    border-radius: 20rpx;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+.acid_img{
+    width: 70rpx;
+    height: 90rpx;
+}
+.acid_text{
+    border-radius: 6rpx;
+    padding: 5rpx;
+    width: 100rpx;
+    height: 60rpx;
+    background-color:#008fd5;
+    font-size: 20rpx;
+    text-align: center;
+    color: white;
+}
+/* 详细信息 */
+.show_label {
+    width: 100%;
+    position: absolute;
+    bottom: 0rpx;
+}
+
+.show_label button{
+    background-color: white;
+    border:none;
+    background: transparent;
+}
+
+.place_info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10rpx;
+    background: white;
+    padding: 10rpx;
+    padding-bottom: 30rpx;
+}
+
+.place_info_h {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 10rpx;
+}
+
+.place_info_h .close{
+    position: absolute;
+    right: 20rpx;
+}
+
+.place_info_title {
+    font-size: 35rpx;
+    margin-top: 20rpx;
+}
+
+.place_info_subtitle {
+    font-size: 30rpx;
+    margin-left: 20rpx;
+}
+
+.place_info_content {
+    color: #999999;
+    font-size: 30rpx;
+    margin-left: 40rpx;
+}
+
+.place_info_level {
+    margin-top: 20rpx;
+    margin-bottom: 20rpx;
+    margin-left: 20rpx;
+    margin-right: 20rpx;
+    background-color: #ff5722;
+    color: #FFFFFF;
+    font-size: 21rpx;
+    padding: 10rpx;
+    /* height: 25rpx; */
+    text-align: center;
+    border-radius: 5rpx;
+}
+/* 底部弹窗 */
+.text{
+    font-size: 30rpx;
+    padding-bottom: 10rpx;
+    padding-top: 10rpx;
+  }
+  .distance_info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10rpx;
+    margin-bottom: 10rpx;
+  }
+  .divLine{
+    background: #E0E3DA;
+    width: 100%;
+    height: 5rpx;
+   }

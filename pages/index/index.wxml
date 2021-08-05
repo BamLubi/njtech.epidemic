@@ -1,0 +1,83 @@
+<!--pages/index/index.wxml-->
+<!-- 通知栏 -->
+<van-notice-bar
+  left-icon="volume-o"
+  text="'e心e力'小程序正式上线啦！目前支持查看江苏省疫情数据、风险地区、核酸检测地点等功能，后续将不断整合各地信息，敬请期待~"
+/>
+
+<!-- 工具列表 -->
+<view class="tools radius margin shadow shadow-lg bg-white cu-list grid col-4">
+  <view wx:for="{{toolsList}}" wx:key="index" class="cu-item" data-path="{{item.path}}" data-type="{{item.type}}" data-index="{{index}}" bindtap="navigatePage">
+    <view>
+      <image src="{{item.src}}"></image>
+    </view>
+    <view class="text-sm text-shadow text-black">{{item.name}}</view>
+  </view>
+</view>
+
+<!-- 疫情热点，展示五条最新新闻消息 -->
+<view class="cu-bar bg-white">
+  <view class="action">
+    <text class="cuIcon-titles text-red"></text>
+    <text class="text-xl text-bold">疫情热点</text>
+  </view>
+</view>
+<view class="cu-list shadow menu bg-white text-sub sm-border">
+  <view wx:for="{{news}}" wx:key="id" class="cu-item arrow" data-data="{{item}}" bindtap="showNews">
+    <view class="cu-tag bg-red sm margin-right-xs">最新</view>
+    <view class="content">
+      <text>{{item.title}}</text>
+    </view>
+  </view>
+</view>
+
+<!-- 疫情数据 -->
+<view class="cu-bar bg-white margin-top">
+  <view class="action">
+    <text class="cuIcon-titles text-red"></text>
+    <text class="text-xl text-bold">江苏省疫情数据</text>
+  </view>
+</view>
+<!-- 数据更新时间 -->
+<view class="text-black text-sm flex justify-end padding-right-xs margin-top-xs margin-bottom-xs">更新时间: {{casesUpdateTime}}</view>
+<!-- 概况数据 -->
+<view class="tools radius margin-left margin-right margin-bottom shadow shadow-lg bg-white cu-list grid col-4">
+  <view class="cu-item">
+    <view class="text-xl text-orange">{{cases.currentConfirmedCount}}</view>
+    <view class="text-sm">现存确诊</view>
+  </view>
+  <view class="cu-item">
+    <view class="text-xl text-red">{{cases.confirmedCount}}</view>
+    <view class="text-sm">累计确诊</view>
+  </view>
+  <view class="cu-item">
+    <view class="text-xl">{{cases.deadCount}}</view>
+    <view class="text-sm">累计死亡</view>
+  </view>
+  <view class="cu-item">
+    <view class="text-xl text-green">{{cases.curedCount}}</view>
+    <view class="text-sm">累计治愈</view>
+  </view>
+</view>
+
+<!-- 疫情数据表格 -->
+<view class="margin-top">
+  <!-- 表头 -->
+  <view class="tr bg-grey text-sm">
+    <view class="th">城市</view>
+    <view class="th">现存确诊</view>
+    <view class="th">累计确诊</view>
+    <view class="th">累计治愈</view>
+    <view class="th">高风险地区</view>
+    <view class="th">中风险地区</view>
+  </view>
+  <!-- 列表 -->
+  <view wx:for="{{cases.cities}}" wx:key="index" class="tr {{index % 2 == 0?'bg-g':'bg-w'}}">
+    <view class="td">{{item.cityName}}</view>
+    <view class="td text-orange text-bold">{{item.currentConfirmedCount}}</view>
+    <view class="td">{{item.confirmedCount}}</view>
+    <view class="td text-green">{{item.curedCount}}</view>
+    <view class="td text-red text-bold">{{item.highDangerCount}}</view>
+    <view class="td text-yellow text-bold">{{item.midDangerCount}}</view>
+  </view>
+</view>

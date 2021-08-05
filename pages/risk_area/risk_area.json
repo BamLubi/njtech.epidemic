@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText":"风险地区",
+    "usingComponents": {
+      "bottomFrame":"../risk_area/bottomFrame/bottomFrame"
+    }
+}

@@ -1,0 +1,17 @@
+<!--pages/news/news.wxml-->
+<!-- 顶部轮播 -->
+<swiper class="screen-swiper square-dot" indicator-dots="true" circular="true" autoplay="true" interval="5000"
+    duration="500">
+    <swiper-item wx:for="{{swiperList}}" wx:key="index">
+        <image src="{{item}}" mode="scaleToFill" lazy-load></image>
+    </swiper-item>
+</swiper>
+<!-- 新闻内容 -->
+<view class="cu-list shadow menu bg-white text-sub sm-border margin-top-sm">
+  <view wx:for="{{news}}" wx:key="id" class="cu-item arrow" data-data="{{item}}" bindtap="showNews">
+    <view class="content padding-xs">
+      <text>{{item.title}}</text>
+      <view class="text-gray text-sm">发布时间: {{item.pubDate}}</view>
+    </view>
+  </view>
+</view>

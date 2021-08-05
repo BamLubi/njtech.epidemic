@@ -1,0 +1,42 @@
+/* pages/index/index.wxss */
+/* 工具列表 */
+.tools image {
+  width: 75rpx;
+  height: 75rpx;
+}
+
+/* 表格 */
+.table {
+  border: 0px solid darkgray;
+}
+
+.tr {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  height: 3rem;
+  align-items: center;
+}
+
+.td {
+  width: 30%;
+  justify-content: center;
+  text-align: center;
+}
+
+.bg-w {
+  background: snow;
+}
+
+.bg-g {
+  background: #e6f3f9;
+}
+
+.th {
+  width: 30%;
+  justify-content: center;
+  color: #fff;
+  display: flex;
+  height: 3rem;
+  align-items: center;
+}

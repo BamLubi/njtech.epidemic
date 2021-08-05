@@ -1,0 +1,52 @@
+<!--pages/risk_area/risk_area.wxml-->
+<view class="map">
+    <!-- 地图 -->
+    <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}" bindmarkertap="markertap" bindupdated="moveToMyLocation" bindtap="hideLabel" scale="{{scale}}" show-location>
+    </map>
+    <!-- 定位按钮 -->
+    <view bindtap='locate' class="locate">
+        <image class="locate_img" src="../../images/map/locate_button.png"></image>
+    </view>
+    <!-- 距离最近风险地区 按钮-->
+    <view class="risk_box" bindtap='popup'>
+        <image class="risk_img" src="../../images/map/risk.png"></image>
+        <view class="risk_text">离我最近风险地区</view>
+    </view>
+    <!-- 详细信息 -->
+    <view class="show_label" hidden="{{notShowLabel}}">
+        <view class="place_info">
+            <!-- 标题栏 -->
+            <view class="place_info_h margin-top margin-bottom">
+                <!-- 风险等级 -->
+                <view class="cu-tag bg-red text-white margin-right-sm">{{level}}</view>
+                <!-- 地点 -->
+                <view class="text-black text-xl">{{title}}</view>
+                <!-- 关闭图标 -->
+                <view class="cuIcon-close close" bindtap="close"></view>
+            </view>
+            <!-- 与我距离 -->
+            <view class="place_info_h">
+                <view class="place_info_subtitle">与我距离</view>
+                <view class="place_info_content">{{distance}}</view>
+            </view>
+            <!-- 详细地址 -->
+            <view class="place_info_h">
+                <view class="place_info_subtitle">详细地址</view>
+                <view class="place_info_content">{{address}}</view>
+            </view>
+        </view>
+    </view>
+    <!-- 底部弹出框 离我最近 -->
+    <bottomFrame id="bottomFrame" frameTitle="离我最近">
+        <scroll-view scroll-y="true" style="height: 500rpx;">
+            <view wx:for="{{distance_list}}" wx:key="index">
+                <!-- 分割线 -->
+                <view class="divLine"></view>
+                <view bindtap='toMarker' data-marker_id="{{item.markerId}}" class="distance_info">
+                    <text class="text">{{item.address}}</text>
+                    <text class="text">{{item.distance}}km</text>
+                </view>
+            </view>
+        </scroll-view>
+    </bottomFrame>
+</view>

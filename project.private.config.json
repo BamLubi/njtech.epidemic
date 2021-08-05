@@ -1,0 +1,60 @@
+{
+    "setting": {},
+    "condition": {
+        "plugin": {
+            "list": []
+        },
+        "game": {
+            "list": []
+        },
+        "gamePlugin": {
+            "list": []
+        },
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "疫情概况",
+                    "pathName": "pages/index/index",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "新闻信息",
+                    "pathName": "pages/news_detail/news_detail",
+                    "query": "data={\"pubDate\":\"1627999213000\",\"title\":\"广州 | 公交 地铁将恢复测温亮码\",\"summary\":\"根据《广州市新冠肺炎防控指挥部办公室交通防控组办公室关于进一步加强城市交通防控措施的通知》要求，为进一步加强广州市城市交通防控措施，从8月4日起广州城市交通将实施如下措施：\\n地铁方面，进入地铁站搭乘地铁的乘客须测温、亮码、佩戴口罩。常规公交方面，搭乘公交车的乘客须测温、佩戴口罩。红黄码人员不得搭乘公共交通工具。\\n巡游出租车、网约车方面，在白云机场、各铁路站（广州站、广州东站、广州南站、广州北站、庆\",\"infoSource\":\"央视新闻app\",\"sourceUrl\":\"\",\"province\":null,\"provinceId\":\"\"}",
+                    "scene": null
+                },
+                {
+                    "name": "风险地区",
+                    "pathName": "pages/risk_area/risk_area",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "实时新闻",
+                    "pathName": "pages/news/news",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "核酸查询",
+                    "pathName": "pages/hesuan/hesuan",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "核酸检测",
+                    "pathName": "pages/acid_test/acid_test",
+                    "query": "",
+                    "scene": null
+                },
+                {
+                    "name": "核酸检测地点",
+                    "pathName": "pages/acid_area/acid_area",
+                    "query": "",
+                    "scene": null
+                }
+            ]
+        }
+    }
+}

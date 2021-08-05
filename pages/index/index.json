@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "e心e力",
+  "usingComponents": {
+    "van-notice-bar": "../../components/vantui/notice-bar/index"
+  }
+}

@@ -1,0 +1,7 @@
+/* pages/news/news.wxss */
+swiper{
+	height: 40vh;
+}
+
+
+  
