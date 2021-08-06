@@ -103,60 +103,46 @@ Page({
           region: e.detail.value
         })
         //对选择字段进行分情况处理
-        var type="";
+        var t="";
         var region="";
         var postcode="";
         //0、全部 全部 全部
         if(e.detail.value[0]=="全部"){
-            type=0;
+            t=0;
         }//1、江苏省 全部 全部
         else if(e.detail.value[0]=="江苏省"&&e.detail.value[1]=="全部"){
-            type=1;
+            t=1;
         }//2、XX省 XX市 全部
         else if(e.detail.value[2]=="全部"){
             //region=所选城市
             region=e.detail.value[1];
-            type=2;
+            t=2;
         }//3、XX省 XX市 XX区
         else{
             region=e.detail.value[1];
             postcode=e.detail.code[2];
-            type=3
-            console.log(region)
-            console.log(postcode)
+            t=3
         }
-        let that = this;
-        console.log("type:"+type)
+        let data={}
+        console.log("type:"+t)
         //由于先在只有江苏省的数据所以 全部 全部 全部=江苏省 全部 全部
-        if(type==0||type==1){
-            API.Request('https://njtech.bamlubi.cn/get_detailed_data', {
-            }, 'GET', '获取风险地区').then(res => {
-                let _markers = [];
-                for (let item of res) {
-                    let type = 2;
-                    if (item["risk_level"] == "高风险") {
-                        type = 0;
-                    } else if (item["risk_level"] == "中风险") {
-                        type = 1;
-                    }
-                    let point = new util.createPoit(item["flag"], item["lat"], item["lng"], item["title"], type);
-                    point.address = item["address"];
-                    point.risk_level = item["risk_level"];
-                    _markers.push(point);
-                }
-                // console.log(_markers);
-                that.setData({
-                    markers: _markers,
-                    hasMarkers: true
-                })
-            })
-        }//XX省 XX市 全部
-        else if(type==2){
-            API.Request('https://njtech.bamlubi.cn/get_detailed_data', {
-            city: region
-        }, 'GET', '获取风险地区').then(res => {
+        if(t==0||t==1){
+            data={}
+        }//XX省 XX市 全部 XX省 XX市 XX区
+        else {
+            data={city: region}
+        }
+        let that=this;
+        // 显示loading框
+        wx.showLoading({
+            title: '加载中',
+        })
+        API.Request('https://njtech.bamlubi.cn/get_detailed_data', data, 'GET', '获取风险地区').then(res => {
             let _markers = [];
             for (let item of res) {
+                if(t==3&&item["adcode"]!=postcode){
+                    continue;
+                }
                 let type = 2;
                 if (item["risk_level"] == "高风险") {
                     type = 0;
@@ -168,45 +154,23 @@ Page({
                 point.risk_level = item["risk_level"];
                 _markers.push(point);
             }
-            // console.log(_markers);
-            that.setData({
-                markers: _markers,
-                hasMarkers: true
+            // 地图中心转移
+            if(_markers!=""){
+                that.mapCtx.moveToLocation({
+                    latitude: parseFloat(_markers[0].latitude),
+                    longitude: parseFloat(_markers[0].longitude),
             })
-        })
-        }//XX省 XX市 XX区
-        else if(type==3){
-            that.setData({
-                markers:[]
-            })
-            API.Request('https://njtech.bamlubi.cn/get_detailed_data', {
-            city: region
-        }, 'GET', '获取风险地区').then(res => {
-            let _markers = [];
-            for (let item of res) {
-                //通过地区邮政编码对数据进行筛选
-                if(item["adcode"]==postcode){
-                    let type = 2;
-                    if (item["risk_level"] == "高风险") {
-                        type = 0;
-                    } else if (item["risk_level"] == "中风险") {
-                        type = 1;
-                    }
-                    let point = new util.createPoit(item["flag"], item["lat"], item["lng"], item["title"], type);
-                    point.address = item["address"];
-                    point.risk_level = item["risk_level"];
-                    _markers.push(point);
-                }
             }
-            // console.log(_markers);
             that.setData({
                 markers: _markers,
-                hasMarkers: true
+                hasMarkers: true,
+                scale:8
             })
+        }).then(res=>{
+            // 隐藏loading框
+            wx.hideLoading()
         })
-        }
-        
-      },
+    },
     /**
      * 点击定位按钮，移动视图到现在所在位置
      * 考虑到用户会移动，因此必须再次获取用户位置
@@ -289,6 +253,8 @@ Page({
      * 进行距离计算排序
      */
     popup() {
+        //流氓一波
+        this.locate()
         let marker = this.data.markers
         let list_temp = []
         // 获取每个点到当前位置的距离
