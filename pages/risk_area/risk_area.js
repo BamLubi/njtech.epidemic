@@ -3,7 +3,6 @@ const app = getApp()
 const util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
 Page({
-
     /**
      * 页面的初始数据
      */
@@ -15,13 +14,15 @@ Page({
         address: "",
         distance: "",
         title: "",
-        callout_id: "",
         la: "",
         ln: "",
         level: "",
         notShowLabel: true,
         distance_list: [],
-        scale: 12
+        scale: 12,
+        // 地区选择器
+        region: ['江苏省', '南京市', '全部'],
+        customItem: '全部'
     },
 
     /**
@@ -92,7 +93,120 @@ Page({
         // // map组件渲染完成时，获取MAP组件，并移动到用户所在位置
         // this.mapCtx.moveToLocation()
     },
-
+     /**
+     * 选择想要查看的地区
+     * 并对数据进行筛选
+     */
+    bindRegionChange: function (e) {
+        console.log('picker发送选择改变，携带值为', e.detail)
+        this.setData({
+          region: e.detail.value
+        })
+        //对选择字段进行分情况处理
+        var type="";
+        var region="";
+        var postcode="";
+        //0、全部 全部 全部
+        if(e.detail.value[0]=="全部"){
+            type=0;
+        }//1、江苏省 全部 全部
+        else if(e.detail.value[0]=="江苏省"&&e.detail.value[1]=="全部"){
+            type=1;
+        }//2、XX省 XX市 全部
+        else if(e.detail.value[2]=="全部"){
+            //region=所选城市
+            region=e.detail.value[1];
+            type=2;
+        }//3、XX省 XX市 XX区
+        else{
+            region=e.detail.value[1];
+            postcode=e.detail.code[2];
+            type=3
+            console.log(region)
+            console.log(postcode)
+        }
+        let that = this;
+        console.log("type:"+type)
+        //由于先在只有江苏省的数据所以 全部 全部 全部=江苏省 全部 全部
+        if(type==0||type==1){
+            API.Request('https://njtech.bamlubi.cn/get_detailed_data', {
+            }, 'GET', '获取风险地区').then(res => {
+                let _markers = [];
+                for (let item of res) {
+                    let type = 2;
+                    if (item["risk_level"] == "高风险") {
+                        type = 0;
+                    } else if (item["risk_level"] == "中风险") {
+                        type = 1;
+                    }
+                    let point = new util.createPoit(item["flag"], item["lat"], item["lng"], item["title"], type);
+                    point.address = item["address"];
+                    point.risk_level = item["risk_level"];
+                    _markers.push(point);
+                }
+                // console.log(_markers);
+                that.setData({
+                    markers: _markers,
+                    hasMarkers: true
+                })
+            })
+        }//XX省 XX市 全部
+        else if(type==2){
+            API.Request('https://njtech.bamlubi.cn/get_detailed_data', {
+            city: region
+        }, 'GET', '获取风险地区').then(res => {
+            let _markers = [];
+            for (let item of res) {
+                let type = 2;
+                if (item["risk_level"] == "高风险") {
+                    type = 0;
+                } else if (item["risk_level"] == "中风险") {
+                    type = 1;
+                }
+                let point = new util.createPoit(item["flag"], item["lat"], item["lng"], item["title"], type);
+                point.address = item["address"];
+                point.risk_level = item["risk_level"];
+                _markers.push(point);
+            }
+            // console.log(_markers);
+            that.setData({
+                markers: _markers,
+                hasMarkers: true
+            })
+        })
+        }//XX省 XX市 XX区
+        else if(type==3){
+            that.setData({
+                markers:[]
+            })
+            API.Request('https://njtech.bamlubi.cn/get_detailed_data', {
+            city: region
+        }, 'GET', '获取风险地区').then(res => {
+            let _markers = [];
+            for (let item of res) {
+                //通过地区邮政编码对数据进行筛选
+                if(item["adcode"]==postcode){
+                    let type = 2;
+                    if (item["risk_level"] == "高风险") {
+                        type = 0;
+                    } else if (item["risk_level"] == "中风险") {
+                        type = 1;
+                    }
+                    let point = new util.createPoit(item["flag"], item["lat"], item["lng"], item["title"], type);
+                    point.address = item["address"];
+                    point.risk_level = item["risk_level"];
+                    _markers.push(point);
+                }
+            }
+            // console.log(_markers);
+            that.setData({
+                markers: _markers,
+                hasMarkers: true
+            })
+        })
+        }
+        
+      },
     /**
      * 点击定位按钮，移动视图到现在所在位置
      * 考虑到用户会移动，因此必须再次获取用户位置

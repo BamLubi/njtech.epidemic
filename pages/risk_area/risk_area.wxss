@@ -1,5 +1,19 @@
 /* pages/risk_area/risk_area.wxss */
 /* 地图 */
+
+/* 地区选择器 */
+.section_box{
+    width: 100%;
+    position: fixed;
+    display: flex;
+    top: 20rpx;
+    align-items: center;
+    justify-content: center;
+}
+.picker{
+    padding: 13px;
+    background-color: #FFFFFF;
+}
 /* 工具栏 */
 .tool_box{
     position: fixed;
