@@ -14,7 +14,6 @@ Page({
      */
     onLoad: function (options) {
         let data = JSON.parse(options.data);
-        data.pubDate = Util.formatTime(new Date(parseInt(data.pubDate)));
         this.setData({
             news: data
         })
