@@ -62,6 +62,12 @@ Page({
             // 不需要实时渲染的数据，尽量不使用this.setData
             that.data.la = res.latitude;
             that.data.ln = res.longitude;
+            // map组件渲染完成时，获取MAP组件，并移动到用户所在位置
+            that.mapCtx = wx.createMapContext('myMap')
+            that.mapCtx.moveToLocation({
+                latitude: parseFloat(res.latitude),
+                longitude: parseFloat(res.longitude),
+            })
             // 隐藏加载框
             wx.hideLoading()
         }).catch(err => {
@@ -82,9 +88,9 @@ Page({
      * @param {*} params 
      */
     moveToMyLocation: function (params) {
-        this.mapCtx = wx.createMapContext('myMap')
-        // map组件渲染完成时，获取MAP组件，并移动到用户所在位置
-        this.mapCtx.moveToLocation()
+        // this.mapCtx = wx.createMapContext('myMap')
+        // // map组件渲染完成时，获取MAP组件，并移动到用户所在位置
+        // this.mapCtx.moveToLocation()
     },
 
     /**
