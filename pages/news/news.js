@@ -2,6 +2,7 @@
 const app = getApp()
 const Util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
+const NewsDB = require("../../db/news_db.js")
 Page({
   /**
    * 页面的初始数据
@@ -22,13 +23,9 @@ Page({
       page: 1,
       num: 10
     }
-    API.Request(url, data, 'GET', '获取新闻').then(res => {
-      let data = res.results
-      data = data.filter(function (x){
-        x.pubDate = Util.formatTime(new Date(parseInt(x.pubDate)));
-      })
+    NewsDB.getNewsList(0, 10).then(res => {
       that.setData({
-        news: res.results
+        news: res
       })
     })
   },

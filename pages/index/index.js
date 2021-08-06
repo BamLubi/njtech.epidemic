@@ -2,6 +2,7 @@
 const app = getApp()
 const util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
+const NewsDB = require("../../db/news_db.js")
 Page({
 
   /**
@@ -64,27 +65,22 @@ Page({
       title: '加载中',
     })
     // 获取五条最新的新闻信息
-    API.Request("https://lab.isaaclin.cn/nCoV/api/news", {
-      page: 1,
-      num: 3
-    }, 'GET', '获取3条最新新闻').then(res => {
+    NewsDB.getNewsList(0,3).then(res => {
       that.setData({
-        news: res.results
+        news: res
       })
       // 获取江苏省的确诊情况
-      return API.Request("https://lab.isaaclin.cn/nCoV/api/area", {
-        latest: 1,
-        provinceEng: "Jiangsu"
-      }, 'GET', '获取江苏省的确诊情况')
+      return API.Request("https://njtech.bamlubi.cn/get_overall_data", {}, 'GET', '获取江苏省的确诊情况')
     }).then(res => {
-      that.setData({
-        cases: res.results[0],
-        casesUpdateTime: util.formatTime(new Date(res.results[0].updateTime))
-      })
+      throw new Error()
+      // that.setData({
+      //   cases: res.results[0],
+      //   casesUpdateTime: util.formatTime(new Date(res.results[0].updateTime))
+      // })
       wx.hideLoading()
     }).catch(err=>{
       console.log("网络请求失败");
-      let res = {"results":[{"locationId":320000,"continentName":"亚洲","continentEnglishName":"Asia","countryName":"中国","countryEnglishName":"China","countryFullName":null,"provinceName":"江苏省","provinceEnglishName":"Jiangsu","provinceShortName":"江苏","currentConfirmedCount":414,"confirmedCount":1166,"suspectedCount":3,"curedCount":752,"deadCount":0,"comment":"","cities":[{"cityName":"南京","currentConfirmedCount":227,"confirmedCount":321,"suspectedCount":0,"curedCount":94,"deadCount":0,"highDangerCount":1,"midDangerCount":29,"locationId":320100,"currentConfirmedCountStr":"227","cityEnglishName":"Nanjing"},{"cityName":"扬州","currentConfirmedCount":162,"confirmedCount":185,"suspectedCount":0,"curedCount":23,"deadCount":0,"highDangerCount":1,"midDangerCount":48,"locationId":321000,"currentConfirmedCountStr":"162","cityEnglishName":"Yangzhou"},{"cityName":"境外输入","currentConfirmedCount":18,"confirmedCount":132,"suspectedCount":1,"curedCount":114,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":0,"currentConfirmedCountStr":"18"},{"cityName":"淮安","currentConfirmedCount":10,"confirmedCount":76,"suspectedCount":0,"curedCount":66,"deadCount":0,"highDangerCount":0,"midDangerCount":10,"locationId":320800,"currentConfirmedCountStr":"10","cityEnglishName":"Huainan"},{"cityName":"宿迁","currentConfirmedCount":3,"confirmedCount":16,"suspectedCount":0,"curedCount":13,"deadCount":0,"highDangerCount":0,"midDangerCount":2,"locationId":321300,"currentConfirmedCountStr":"3","cityEnglishName":"Suqian"},{"cityName":"苏州","currentConfirmedCount":0,"confirmedCount":87,"suspectedCount":0,"curedCount":87,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320500,"currentConfirmedCountStr":"0","cityEnglishName":"Suzhou"},{"cityName":"徐州","currentConfirmedCount":0,"confirmedCount":79,"suspectedCount":0,"curedCount":79,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320300,"currentConfirmedCountStr":"0","cityEnglishName":"Xuzhou"},{"cityName":"无锡","currentConfirmedCount":0,"confirmedCount":55,"suspectedCount":0,"curedCount":55,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320200,"currentConfirmedCountStr":"0","cityEnglishName":"Wuxi"},{"cityName":"常州","currentConfirmedCount":0,"confirmedCount":51,"suspectedCount":0,"curedCount":51,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320400,"currentConfirmedCountStr":"0","cityEnglishName":"Changzhou"},{"cityName":"连云港","currentConfirmedCount":0,"confirmedCount":48,"suspectedCount":0,"curedCount":48,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320700,"currentConfirmedCountStr":"0","cityEnglishName":"Lianyungang"},{"cityName":"南通","currentConfirmedCount":0,"confirmedCount":40,"suspectedCount":0,"curedCount":40,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320600,"currentConfirmedCountStr":"0","cityEnglishName":"Nantong"},{"cityName":"泰州","currentConfirmedCount":0,"confirmedCount":37,"suspectedCount":0,"curedCount":37,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":321200,"currentConfirmedCountStr":"0","cityEnglishName":"Taizhou"},{"cityName":"盐城","currentConfirmedCount":0,"confirmedCount":27,"suspectedCount":0,"curedCount":27,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320900,"currentConfirmedCountStr":"0","cityEnglishName":"Yancheng"},{"cityName":"镇江","currentConfirmedCount":0,"confirmedCount":12,"suspectedCount":0,"curedCount":12,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":321100,"currentConfirmedCountStr":"0","cityEnglishName":"Zhenjiang"},{"cityName":"待明确地区","currentConfirmedCount":-6,"confirmedCount":0,"suspectedCount":0,"curedCount":6,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":0,"notShowCurrentConfirmedCount":true,"currentConfirmedCountStr":"-","cityEnglishName":"Area not defined"}],"updateTime":1628135473594}],"success":true}
+      let res = {"results":[{"locationId":320000,"continentName":"亚洲","continentEnglishName":"Asia","countryName":"中国","countryEnglishName":"China","countryFullName":null,"provinceName":"江苏省","provinceEnglishName":"Jiangsu","provinceShortName":"江苏","currentConfirmedCount":468,"confirmedCount":1227,"suspectedCount":3,"curedCount":759,"deadCount":0,"comment":"","cities":[{"cityName":"南京","currentConfirmedCount":222,"confirmedCount":322,"suspectedCount":0,"curedCount":100,"deadCount":0,"highDangerCount":1,"midDangerCount":28,"locationId":320100,"currentConfirmedCountStr":"222","cityEnglishName":"Nanjing"},{"cityName":"扬州","currentConfirmedCount":220,"confirmedCount":243,"suspectedCount":0,"curedCount":23,"deadCount":0,"highDangerCount":1,"midDangerCount":66,"locationId":321000,"currentConfirmedCountStr":"220","cityEnglishName":"Yangzhou"},{"cityName":"境外输入","currentConfirmedCount":18,"confirmedCount":132,"suspectedCount":1,"curedCount":114,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":0,"currentConfirmedCountStr":"18"},{"cityName":"淮安","currentConfirmedCount":12,"confirmedCount":78,"suspectedCount":0,"curedCount":66,"deadCount":0,"highDangerCount":0,"midDangerCount":10,"locationId":320800,"currentConfirmedCountStr":"12","cityEnglishName":"Huainan"},{"cityName":"宿迁","currentConfirmedCount":3,"confirmedCount":16,"suspectedCount":0,"curedCount":13,"deadCount":0,"highDangerCount":0,"midDangerCount":2,"locationId":321300,"currentConfirmedCountStr":"3","cityEnglishName":"Suqian"},{"cityName":"苏州","currentConfirmedCount":0,"confirmedCount":87,"suspectedCount":0,"curedCount":87,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320500,"currentConfirmedCountStr":"0","cityEnglishName":"Suzhou"},{"cityName":"徐州","currentConfirmedCount":0,"confirmedCount":79,"suspectedCount":0,"curedCount":79,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320300,"currentConfirmedCountStr":"0","cityEnglishName":"Xuzhou"},{"cityName":"无锡","currentConfirmedCount":0,"confirmedCount":55,"suspectedCount":0,"curedCount":55,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320200,"currentConfirmedCountStr":"0","cityEnglishName":"Wuxi"},{"cityName":"常州","currentConfirmedCount":0,"confirmedCount":51,"suspectedCount":0,"curedCount":51,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320400,"currentConfirmedCountStr":"0","cityEnglishName":"Changzhou"},{"cityName":"连云港","currentConfirmedCount":0,"confirmedCount":48,"suspectedCount":0,"curedCount":48,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320700,"currentConfirmedCountStr":"0","cityEnglishName":"Lianyungang"},{"cityName":"南通","currentConfirmedCount":0,"confirmedCount":40,"suspectedCount":0,"curedCount":40,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320600,"currentConfirmedCountStr":"0","cityEnglishName":"Nantong"},{"cityName":"泰州","currentConfirmedCount":0,"confirmedCount":37,"suspectedCount":0,"curedCount":37,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":321200,"currentConfirmedCountStr":"0","cityEnglishName":"Taizhou"},{"cityName":"盐城","currentConfirmedCount":0,"confirmedCount":27,"suspectedCount":0,"curedCount":27,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320900,"currentConfirmedCountStr":"0","cityEnglishName":"Yancheng"},{"cityName":"镇江","currentConfirmedCount":0,"confirmedCount":12,"suspectedCount":0,"curedCount":12,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":321100,"currentConfirmedCountStr":"0","cityEnglishName":"Zhenjiang"}],"updateTime":1628220675435}],"success":true};
       that.setData({
         cases: res.results[0],
         casesUpdateTime: util.formatTime(new Date(res.results[0].updateTime))
