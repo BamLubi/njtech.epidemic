@@ -32,9 +32,9 @@ Page({
     onLoad: function (options) {
         let that = this;
         // 显示loading框
-        // wx.showLoading({
-        //     title: '加载中',
-        // })
+        wx.showLoading({
+            title: '加载中',
+        })
         // // 获取地图标记点数据
         // API.Request('https://njtech.bamlubi.cn/getdata_auto', {
         //     city: "南京市"
