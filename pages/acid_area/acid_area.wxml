@@ -1,21 +1,42 @@
 <!--pages/risk_area/risk_area.wxml-->
 <view class="map">
     <!-- 地图 -->
-    <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}" bindmarkertap="markertap" bindupdated="moveToMyLocation" bindtap="hideLabel" scale="{{scale}}" 
+    <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}" bindmarkertap="markertap" scale="{{scale}}"
         show-location="true">
     </map>
-    <!-- 定位按钮 -->
-    <view bindtap='locate'class="locate">
-        <image class="locate_img" src="../../images/map/locate_button.png"></image>
-    </view>
-    <!-- 距离最近核酸检测地区 按钮-->
-    <view class="acid_box" bindtap='popup'>
-        <image class="acid_img" src="../../images/map/acid.png"></image>
-        <view class="acid_text">最近核酸检测点</view>
+    <!-- 搜索框 -->
+    <view class="search_box">
+        <view class='uinn'>
+        <view class="weui-search-bar flex-row uinn bg_white mar-t">
+            <view class="weui-search-bar__form flex1 flex-row">
+            <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+            <input type="text" class="weui-search-bar__input" placeholder="请输入查询的地点" value="{{inputVal}}" bindinput="inputTyping" class='flex1 mar-l' />
+            <scroll-view class='scroll-view' wx:if='{{viewShowed}}' scroll-y>
+            <view wx:for="{{serachList}}" wx:key="marker_index" class="msg-item " >
+                <view class='user-name' bindtap='name' data-index="{{item.marker_index}}" >{{item.addr}}</view>
+            </view>
+            </scroll-view>
+            </view>
+            <view class="weui-search-bar__cancel-btn" bindtap="hideInput">取消</view>
+        </view>
+        </view>
+    </view> 
+    <!-- 工具栏 -->
+    <view class="tool_box">
+       <!-- 距离最近核酸检测地区 按钮-->
+       <view class="acid_box" bindtap='popup'>
+            <image class="acid_img" src="../../images/map/acid.png"></image>
+            <view class="acid_text">最近核酸检测点</view>
+        </view>
+
+        <!-- 定位按钮 -->
+        <view bindtap='locate'class="locate">
+            <image class="locate_img" src="../../images/map/locate_button.png"></image>
+        </view>
     </view>
     <!-- 详细信息 -->
     <view class="show_label" hidden="{{notShowLabel}}">
-        <view class="place_info">
+        <view class="place_info" marker-id="{{callout_id}}">
             <!-- 标题栏 -->
             <view class="place_info_h margin-top margin-bottom">
                 <!-- 地点 -->
@@ -47,7 +68,7 @@
             <view  wx:for="{{distance_list}}" wx:key="index">
                 <!-- 分割线 -->
                 <view class="divLine"></view>
-                <view bindtap='toMarker' data-marker_id="{{item.markerId}}" class="distance_info">
+                <view bindtap='toMarker' data-item_index='{{item.index}}' class="distance_info">
                     <text class="text">{{item.address}}</text>
                     <text class="text">{{item.distance}}km</text>
                 </view>
