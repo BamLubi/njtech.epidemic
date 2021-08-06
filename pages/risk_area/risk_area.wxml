@@ -3,14 +3,17 @@
     <!-- 地图 -->
     <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}" bindmarkertap="markertap" bindupdated="moveToMyLocation" bindtap="hideLabel" scale="{{scale}}" show-location>
     </map>
-    <!-- 定位按钮 -->
-    <view bindtap='locate' class="locate">
-        <image class="locate_img" src="../../images/map/locate_button.png"></image>
-    </view>
-    <!-- 距离最近风险地区 按钮-->
-    <view class="risk_box" bindtap='popup'>
-        <image class="risk_img" src="../../images/map/risk.png"></image>
-        <view class="risk_text">离我最近风险地区</view>
+   <!-- 工具栏 -->
+   <view class="tool_box">
+        <!-- 距离最近风险地区 按钮-->
+        <view class="risk_box" bindtap='popup'>
+            <image class="risk_img" src="../../images/map/risk.png"></image>
+            <view class="risk_text">离我最近风险地区</view>
+        </view>
+        <!-- 定位按钮 -->
+        <view bindtap='locate' class="locate">
+            <image class="locate_img" src="../../images/map/locate_button.png"></image>
+        </view>
     </view>
     <!-- 详细信息 -->
     <view class="show_label" hidden="{{notShowLabel}}">
