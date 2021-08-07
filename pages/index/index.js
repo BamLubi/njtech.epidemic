@@ -3,6 +3,7 @@ const app = getApp()
 const util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
 const NewsDB = require("../../db/news_db.js")
+const OverallDB = require("../../db/overall_db.js")
 Page({
 
   /**
@@ -43,7 +44,7 @@ Page({
       src: '/images/index/xingcheng.png',
       path: '/',
       type: 'button',
-      func: () =>{
+      func: () => {
         wx.navigateToMiniProgram({
           appId: 'wx8f446acf8c4a85f5',
           envVersion: 'release',
@@ -53,7 +54,11 @@ Page({
     // 江苏省的确诊病例情况
     cases: [],
     // cases数据的更新时间
-    casesUpdateTime: null
+    casesUpdateTime: null,
+    // 当前选择的省份
+    select: 0,
+    selectid: "江苏省",
+    Cdata: ["江苏省","浙江省","河北省","山西省","辽宁省","吉林省","黑龙江省","安徽省","福建省","江西省","北京市","内蒙古自治区","上海市","山东省","湖北省","广东省","海南省","四川省","云南省","陕西省","青海省","新疆维吾尔自治区","宁夏回族自治区","甘肃省","贵州省","重庆市","广西壮族自治区","湖南省","河南省","黑龙江省","山西省","天津市"],
   },
 
   /**
@@ -61,32 +66,18 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-    wx.showLoading({
-      title: '加载中',
-    })
     // 获取五条最新的新闻信息
-    NewsDB.getNewsList(0,3).then(res => {
+    NewsDB.getNewsList(0, 3).then(res => {
+      console.log("获取新闻成功")
+      console.log(this.data.selectid)
       that.setData({
         news: res
       })
-      // 获取江苏省的确诊情况
-      return API.Request("https://njtech.bamlubi.cn/get_overall_data", {}, 'GET', '获取江苏省的确诊情况')
-    }).then(res => {
-      throw new Error()
-      // that.setData({
-      //   cases: res.results[0],
-      //   casesUpdateTime: util.formatTime(new Date(res.results[0].updateTime))
-      // })
-      wx.hideLoading()
-    }).catch(err=>{
-      console.log("网络请求失败");
-      let res = {"results":[{"locationId":320000,"continentName":"亚洲","continentEnglishName":"Asia","countryName":"中国","countryEnglishName":"China","countryFullName":null,"provinceName":"江苏省","provinceEnglishName":"Jiangsu","provinceShortName":"江苏","currentConfirmedCount":468,"confirmedCount":1227,"suspectedCount":3,"curedCount":759,"deadCount":0,"comment":"","cities":[{"cityName":"南京","currentConfirmedCount":222,"confirmedCount":322,"suspectedCount":0,"curedCount":100,"deadCount":0,"highDangerCount":1,"midDangerCount":28,"locationId":320100,"currentConfirmedCountStr":"222","cityEnglishName":"Nanjing"},{"cityName":"扬州","currentConfirmedCount":220,"confirmedCount":243,"suspectedCount":0,"curedCount":23,"deadCount":0,"highDangerCount":1,"midDangerCount":66,"locationId":321000,"currentConfirmedCountStr":"220","cityEnglishName":"Yangzhou"},{"cityName":"境外输入","currentConfirmedCount":18,"confirmedCount":132,"suspectedCount":1,"curedCount":114,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":0,"currentConfirmedCountStr":"18"},{"cityName":"淮安","currentConfirmedCount":12,"confirmedCount":78,"suspectedCount":0,"curedCount":66,"deadCount":0,"highDangerCount":0,"midDangerCount":10,"locationId":320800,"currentConfirmedCountStr":"12","cityEnglishName":"Huainan"},{"cityName":"宿迁","currentConfirmedCount":3,"confirmedCount":16,"suspectedCount":0,"curedCount":13,"deadCount":0,"highDangerCount":0,"midDangerCount":2,"locationId":321300,"currentConfirmedCountStr":"3","cityEnglishName":"Suqian"},{"cityName":"苏州","currentConfirmedCount":0,"confirmedCount":87,"suspectedCount":0,"curedCount":87,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320500,"currentConfirmedCountStr":"0","cityEnglishName":"Suzhou"},{"cityName":"徐州","currentConfirmedCount":0,"confirmedCount":79,"suspectedCount":0,"curedCount":79,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320300,"currentConfirmedCountStr":"0","cityEnglishName":"Xuzhou"},{"cityName":"无锡","currentConfirmedCount":0,"confirmedCount":55,"suspectedCount":0,"curedCount":55,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320200,"currentConfirmedCountStr":"0","cityEnglishName":"Wuxi"},{"cityName":"常州","currentConfirmedCount":0,"confirmedCount":51,"suspectedCount":0,"curedCount":51,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320400,"currentConfirmedCountStr":"0","cityEnglishName":"Changzhou"},{"cityName":"连云港","currentConfirmedCount":0,"confirmedCount":48,"suspectedCount":0,"curedCount":48,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320700,"currentConfirmedCountStr":"0","cityEnglishName":"Lianyungang"},{"cityName":"南通","currentConfirmedCount":0,"confirmedCount":40,"suspectedCount":0,"curedCount":40,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320600,"currentConfirmedCountStr":"0","cityEnglishName":"Nantong"},{"cityName":"泰州","currentConfirmedCount":0,"confirmedCount":37,"suspectedCount":0,"curedCount":37,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":321200,"currentConfirmedCountStr":"0","cityEnglishName":"Taizhou"},{"cityName":"盐城","currentConfirmedCount":0,"confirmedCount":27,"suspectedCount":0,"curedCount":27,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":320900,"currentConfirmedCountStr":"0","cityEnglishName":"Yancheng"},{"cityName":"镇江","currentConfirmedCount":0,"confirmedCount":12,"suspectedCount":0,"curedCount":12,"deadCount":0,"highDangerCount":0,"midDangerCount":0,"locationId":321100,"currentConfirmedCountStr":"0","cityEnglishName":"Zhenjiang"}],"updateTime":1628220675435}],"success":true};
-      that.setData({
-        cases: res.results[0],
-        casesUpdateTime: util.formatTime(new Date(res.results[0].updateTime))
-      })
-      wx.hideLoading()
+    }).catch(err => {
+      API.ShowToast('网络请求失败', 'error')
     })
+    // 获取江苏省疫情数据
+    this.getOverall()
   },
 
   /**
@@ -174,6 +165,51 @@ Page({
     } else {
       API.ShowToast('正在施工中...', 'none', 2000)
     }
+  },
+
+  /**
+   * 获取省份的确诊情况和各市的确诊情况
+   */
+  getOverall: function () {
+    let that = this;
+    wx.showLoading({
+      title: '加载中',
+    })
+    // 获取江苏省的确诊情况
+    OverallDB.getProvinceOverall(that.data.selectid)
+      .then(res => {
+        that.setData({
+          cases: res,
+          casesUpdateTime: res.updateTime
+        })
+        wx.hideLoading()
+        // 获取省内各城市数据
+        return OverallDB.getCityOverall(that.data.selectid)
+      }).then(res => {
+        that.setData({
+          citycases: res
+        })
+      }).catch(err => {
+        wx.hideLoading()
+        API.ShowToast('网络请求失败', 'error')
+      })
+  },
+
+  /**
+   * 切换省份
+   * @param {*} e 
+   */
+  getSelect: function (e) {
+    console.log("你选择的省份为：" + e.currentTarget.dataset.pn)
+    let that = this
+    var index = e.currentTarget.dataset.index
+    var pn = e.currentTarget.dataset.pn
+    that.setData({
+      select: index,
+      selectid: pn
+    })
+    // 获取疫情数据
+    this.getOverall()
   }
 
 })

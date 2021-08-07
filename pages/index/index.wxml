@@ -1,13 +1,11 @@
 <!--pages/index/index.wxml-->
 <!-- 通知栏 -->
-<van-notice-bar
-  left-icon="volume-o"
-  text="'e心e力'小程序正式上线啦！目前支持查看江苏省疫情数据、风险地区、核酸检测地点等功能，后续将不断整合各地信息，敬请期待~"
-/>
+<van-notice-bar left-icon="volume-o" text="'e心e力'小程序正式上线啦！目前支持查看江苏省疫情数据、风险地区、核酸检测地点等功能，后续将不断整合各地信息，敬请期待~" />
 
 <!-- 工具列表 -->
 <view class="tools radius margin shadow shadow-lg bg-white cu-list grid col-4">
-  <view wx:for="{{toolsList}}" wx:key="index" class="cu-item" data-path="{{item.path}}" data-type="{{item.type}}" data-index="{{index}}" bindtap="navigatePage">
+  <view wx:for="{{toolsList}}" wx:key="index" class="cu-item" data-path="{{item.path}}" data-type="{{item.type}}"
+    data-index="{{index}}" bindtap="navigatePage">
     <view>
       <image src="{{item.src}}"></image>
     </view>
@@ -36,11 +34,23 @@
 <view class="cu-bar bg-white margin-top">
   <view class="action">
     <text class="cuIcon-titles text-red"></text>
-    <text class="text-xl text-bold">江苏省疫情数据</text>
+    <text class="text-xl text-bold">疫情数据</text>
   </view>
 </view>
+<!-- 滑块切换省份疫情数据 -->
+<view class="banner">
+  <scroll-view scroll-x scroll-with-animation scroll-into-view="nav-{{select > 0 ? select -1 : select}}">
+    <view wx:for="{{Cdata}}" wx:for-index="index" wx:key="index" id="nav-{{index}}"
+      class="sort {{index == select ? 'choose text-bold' : 'text-gray'}}" data-pn="{{item}}" data-index="{{index}}" bindtap="getSelect">
+      {{item}}
+      <view class="line" wx:if="{{index == select}}"></view>
+    </view>
+  </scroll-view>
+</view>
 <!-- 数据更新时间 -->
-<view class="text-black text-sm flex justify-end padding-right-xs margin-top-xs margin-bottom-xs">更新时间: {{casesUpdateTime}}</view>
+<view class="text-black text-sm flex justify-end padding-right-xs margin-top-xs margin-bottom-xs">
+  更新时间: {{casesUpdateTime}}
+</view>
 <!-- 概况数据 -->
 <view class="tools radius margin-left margin-right margin-bottom shadow shadow-lg bg-white cu-list grid col-4">
   <view class="cu-item">
@@ -60,7 +70,6 @@
     <view class="text-sm">累计治愈</view>
   </view>
 </view>
-
 <!-- 疫情数据表格 -->
 <view class="margin-top">
   <!-- 表头 -->
@@ -73,7 +82,7 @@
     <view class="th">中风险地区</view>
   </view>
   <!-- 列表 -->
-  <view wx:for="{{cases.cities}}" wx:key="index" class="tr {{index % 2 == 0?'bg-g':'bg-w'}}">
+  <view wx:for="{{citycases}}" wx:key="index" class="tr {{index % 2 == 0?'bg-g':'bg-w'}}">
     <view class="td">{{item.cityName}}</view>
     <view class="td text-orange text-bold">{{item.currentConfirmedCount}}</view>
     <view class="td">{{item.confirmedCount}}</view>
