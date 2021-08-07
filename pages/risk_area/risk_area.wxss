@@ -18,7 +18,7 @@
 .tool_box{
     position: fixed;
     bottom:200rpx;
-    right: 10rpx;
+    right: 20rpx;
     height: 300rpx;
     display: flex;
     flex-direction: column;
@@ -45,22 +45,22 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 140rpx;
-    height: 140rpx;
+    width: 90rpx;
+    height: 90rpx;
     border-radius: 20rpx;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgb(255, 255, 255);
 }
 .risk_img{
-    width: 60rpx;
-    height: 60rpx;
+    width: 45rpx;
+    height: 45rpx;
 }
 .risk_text{
     border-radius: 6rpx;
     padding: 5rpx;
-    width: 100rpx;
-    height: 60rpx;
+    /* width: 100rpx; */
+    /* height: 60rpx; */
     background-color:#ed564e;
-    font-size: 20rpx;
+    font-size: 17rpx;
     text-align: center;
     color: white;
 }

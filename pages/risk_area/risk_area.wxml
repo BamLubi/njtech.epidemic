@@ -1,27 +1,28 @@
 <!--pages/risk_area/risk_area.wxml-->
 <view class="map">
     <!-- 地图 -->
-    <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}" bindmarkertap="markertap" bindupdated="moveToMyLocation" bindtap="hideLabel" scale="{{scale}}" show-location>
+    <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}"
+        bindmarkertap="markertap" bindupdated="moveToMyLocation" bindtap="hideLabel" scale="{{scale}}" show-location>
     </map>
     <!-- 地区选择器 -->
     <view class="section_box">
-    <view class="section">
-        <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-            <view class="picker">
-                当前选择：{{region[0]}}，{{region[1]}}，{{region[2]}}
-            </view>
-        </picker>
+        <view class="section">
+            <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+                <view class="picker">
+                    {{region[0]}}-{{region[1]}}-{{region[2]}}
+                </view>
+            </picker>
+        </view>
     </view>
-    </view>
-   <!-- 工具栏 -->
-   <view class="tool_box">
+    <!-- 工具栏 -->
+    <view class="tool_box">
         <!-- 距离最近风险地区 按钮-->
         <view class="risk_box" bindtap='popup'>
             <image class="risk_img" src="../../images/map/risk.png"></image>
-            <view class="risk_text">离我最近风险地区</view>
+            <view class="risk_text">离我最近</view>
         </view>
         <!-- 定位按钮 -->
-        <view bindtap='locate' class="locate">
+        <view class="locate" bindtap='locate'>
             <image class="locate_img" src="../../images/map/locate_button.png"></image>
         </view>
     </view>
