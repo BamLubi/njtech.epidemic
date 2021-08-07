@@ -1,33 +1,64 @@
 // pages/news/news.js
 const app = getApp()
-const Util = require('../../utils/util.js')
+const util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
-const NewsDB = require("../../db/news_db.js")
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    swiperList: ["https://mmbiz.qpic.cn/mmbiz_jpg/fPSa4zeEwhAYSFRn22tqNPaOHeeXejDIp60EVwZalZMoyuctJHQLLdx1KsbZvhkhoibd6IgjRqvped3fywG0Hww/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1", "http://www.njcdc.cn/Uploads/Images/20210709/210709062456620147.jpg", "http://www.njcdc.cn/Uploads/Images/20210625/210625041223057216.jpg"],
     news: [],
+    provinces:[],
+    myProvince:'',
+    myCity:'',
+    
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    let that = this;
-    // 获取新闻信息
-    let url = "https://lab.isaaclin.cn/nCoV/api/news";
-    let data = {
-      page: 1,
-      num: 10
-    }
-    NewsDB.getNewsList(0, 10).then(res => {
-      that.setData({
-        news: res
-      })
+
+   bindPickerChange: function(e) {
+    console.log('picker发送选择改变，携带值为', e.detail.value)
+    this.setData({
+      index: e.detail.value,
     })
+    this.onLoad()
+  },
+
+  getData:function(pro='江苏省'/*,ci='扬州市'*/){
+    wx.request({
+      url: 'https://njtech.bamlubi.cn/get_news_data',
+      data:{
+        page:1,
+        num:10,
+        province:pro,
+        //city:ci
+      },
+      success:res=>{
+        console.log(res.data)
+        this.setData({
+          news:res.data
+        })
+      }
+    })
+   },
+
+  onLoad: function (options) {
+    //获取各个省
+    wx.request({
+      url: 'https://njtech.bamlubi.cn/get_provinceName',
+      data:{},
+      success:res=>{
+        console.log(res.data)
+        this.setData({
+          provinces:res.data
+        })
+      }
+    })
+
+    //获取该省新闻
+    this.getData(this.data.provinces[this.data.index]);
   },
 
   /**
