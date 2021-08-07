@@ -24,6 +24,9 @@ Page({
         viewShowed: false, //显示结果view的状态
         inputVal: "", // 搜索框值
         serachList: [], //搜索渲染推荐数据
+        // 地区选择器
+        region: ['江苏省', '南京市', '全部'],
+        customItem: '全部'
     },
 
     /**
@@ -78,18 +81,7 @@ Page({
         //     console.error(err);
         // })
         // 获取地图标记点数据
-        var _markers=[]
-        for(let item of p_data.postData.RECORDS){
-            // if(item["lat"]>180||item["lat"]<-180||item["lng"]>180||item["lng"]<-180){
-            //     console.log(item["uuid"])
-            // }
-            let point = new util.createPoit(item["uuid"], item["lat"], item["lng"], item["name"], 0)
-            point.address = item["address"]
-            point.tel=item["tel"]
-            
-            _markers.push(point)
-            // console.log(_markers)
-        }
+        var _markers=this.getAcidareaList("江苏省","南京市","全部")
         that.setData({
             markers:_markers,
             hasMarkers:true
@@ -125,6 +117,65 @@ Page({
         // this.mapCtx.moveToLocation()
         // let marker=this.data.markers
     },
+    /**
+     * 选择想要查看的地区
+     * 并对数据进行筛选
+     */
+    bindRegionChange: function (e) {
+      let that = this;
+      // 判断用户是否选择了全部省份或全部城市
+      let region = e.detail.value
+      console.log(region);
+      if(region[0] == '全部' || region[1] == '全部'){
+          API.ShowModal('','请至少选择到指定市哦！',false)
+          region = ['江苏省','南京市','全部']
+          this.setData({
+              region: region
+          })
+          return
+      }
+      // 显示loading框
+      wx.showLoading({
+          title: '加载中',
+      })
+      // 获取风险地区列表
+          let res=this.getAcidareaList(region[0],region[1],region[2])
+          // 如果没数据则展示
+          if (res.length == 0){
+              API.ShowToast('暂时没有数据','none');
+              region =  ['江苏省', '南京市', '全部']
+              return
+          }
+          // 地图中心转移
+          that.mapCtx.moveToLocation({
+              latitude: parseFloat(res[0].latitude),
+              longitude: parseFloat(res[0].longitude),
+          })
+          that.setData({
+              markers: res,
+              hasMarkers: true,
+              scale: 10,
+              region: region
+          })
+          wx.hideLoading({
+          })
+  },
+  getAcidareaList:function(province='江苏省',city='南京市',district='全部'){
+    var _markers=[]
+    if(city=='南京市'||city=='扬州市'){
+        for(let item of p_data.postData.RECORDS){
+          if((item["city"]==city&&district=="全部")||(item["city"]==city&&item["district"]==district)){
+            var point = new util.createPoit(item["uuid"], item["lat"], item["lng"], item["name"], 0)
+            point.address = item["address"]
+            point.tel=item["tel"]
+            _markers.push(point)
+            // console.log(_markers)
+          }
+        }
+    }
+    // console.log(_markers)
+    return _markers
+  },
     /**
      *点击定位按钮，移动视图到现在所在位置
      */

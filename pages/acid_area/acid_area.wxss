@@ -1,22 +1,43 @@
 /* pages/risk_area/risk_area.wxss */
 /* 地图 */
+
+
+/* 地区选择器 */
+.top_box{
+  width: 100%;
+  position: fixed;
+  display: flex;
+  top: 0rpx;
+  align-items: center;
+  justify-content: space-around;
+  background-color: white;
+}
+
+.section_box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.picker{
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
+  padding-left: 10rpx;
+  padding-right: 10rpx;
+  background-color: #FFFFFF;
+}
+/* 搜索栏 */
+.search_box{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
 /* 工具栏 */
 .tool_box{
     position: fixed;
     bottom:200rpx;
     right: 10rpx;
     height: 300rpx;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
-/* 搜索栏 */
-.search_box{
-    position: fixed;
-    top:0rpx;
-    width: 100%;
-    padding-top: 30rpx;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -184,7 +205,8 @@
   .weui-search-bar__form {
     position: relative;
     align-items: center;
-   
+    background-color: #f5f5f5;
+    border-radius: 50rpx;
   }
   .weui-search-bar__input {
     height: 92rpx;
@@ -194,16 +216,16 @@
     margin-right: 20rpx;
   }
   .weui-search-bar__cancel-btn {
-    line-height: 70rpx;
-    margin-right: 15px;
+    margin-left: 20rpx;
+    margin-right: 20rpx;
   }
    
   .weui-icon-clear {
     top: 4rpx;
   }
   .flex-row {
-    background-color: #fff;
     display: flex;
-    -webkit-box-orient: horizontal;
+    align-items: center;
+    justify-content: space-around;
   }
    

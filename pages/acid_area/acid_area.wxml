@@ -4,8 +4,19 @@
     <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}"
         bindmarkertap="markertap" bindtap="hideLabel" scale="{{scale}}" show-location="true">
     </map>
-    <!-- 搜索框 -->
-    <view class="search_box">
+    <view class="top_box">
+        <!-- 地区选择器 -->
+        <view class="section_box">
+        <view class="section">
+            <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+                <view class="picker">
+                    {{region[0]}}-{{region[1]}}-{{region[2]}}
+                </view>
+            </picker>
+        </view>
+        </view>
+        <!-- 搜索框 -->
+        <view class="search_box">
         <view class='uinn'>
             <view class="weui-search-bar flex-row uinn bg_white mar-t">
                 <view class="weui-search-bar__form flex1 flex-row">
@@ -21,7 +32,9 @@
                 <view class="weui-search-bar__cancel-btn" bindtap="hideInput">取消</view>
             </view>
         </view>
+        </view>
     </view>
+    
     <!-- 工具栏 -->
     <view class="tool_box">
         <!-- 距离最近核酸检测地区 按钮-->

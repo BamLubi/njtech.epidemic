@@ -116,7 +116,7 @@ Page({
             that.setData({
                 markers: res,
                 hasMarkers: true,
-                scale: 14
+                scale: 10
             })
         }).then(res => {
             // 隐藏loading框
