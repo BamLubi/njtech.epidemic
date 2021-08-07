@@ -2,6 +2,7 @@
 const app = getApp()
 const util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
+const RiskareaDB = require("../../db/riskarea_db.js")
 Page({
     /**
      * 页面的初始数据
@@ -19,7 +20,7 @@ Page({
         level: "",
         notShowLabel: true,
         distance_list: [],
-        scale: 12,
+        scale: 14,
         // 地区选择器
         region: ['江苏省', '南京市', '全部'],
         customItem: '全部'
@@ -34,25 +35,10 @@ Page({
         wx.showLoading({
             title: '加载中',
         })
-        // 获取地图标记点数据
-        API.Request('https://njtech.bamlubi.cn/get_detailed_data', {
-            city: "南京市"
-        }, 'GET', '获取风险地区').then(res => {
-            let _markers = [];
-            for (let item of res) {
-                let type = 2;
-                if (item["risk_level"] == "高风险") {
-                    type = 0;
-                } else if (item["risk_level"] == "中风险") {
-                    type = 1;
-                }
-                let point = new util.createPoit(item["flag"], item["lat"], item["lng"], item["title"], type);
-                point.address = item["address"];
-                point.risk_level = item["risk_level"];
-                _markers.push(point);
-            }
+        // 获取风险地区列表
+        RiskareaDB.getRiskareaList('江苏省', '南京市').then(res => {
             that.setData({
-                markers: _markers,
+                markers: res,
                 hasMarkers: true
             })
             // 获取用户位置
@@ -93,84 +79,61 @@ Page({
         // // map组件渲染完成时，获取MAP组件，并移动到用户所在位置
         // this.mapCtx.moveToLocation()
     },
-     /**
+    /**
      * 选择想要查看的地区
      * 并对数据进行筛选
      */
     bindRegionChange: function (e) {
-        console.log('picker发送选择改变，携带值为', e.detail)
-        this.setData({
-          region: e.detail.value
-        })
-        //对选择字段进行分情况处理
-        var t="";
-        var region="";
-        var postcode="";
-        //0、全部 全部 全部
-        if(e.detail.value[0]=="全部"){
-            t=0;
-        }//1、江苏省 全部 全部
-        else if(e.detail.value[0]=="江苏省"&&e.detail.value[1]=="全部"){
-            t=1;
-        }//2、XX省 XX市 全部
-        else if(e.detail.value[2]=="全部"){
-            //region=所选城市
-            region=e.detail.value[1];
-            t=2;
-        }//3、XX省 XX市 XX区
-        else{
-            region=e.detail.value[1];
-            postcode=e.detail.code[2];
-            t=3
+        let that = this;
+        // 判断用户是否选择了全部省份或全部城市
+        let region = e.detail.value
+        console.log(region);
+        if(region[0] == '全部' || region[1] == '全部'){
+            API.ShowModal('','请至少选择到指定市哦！',false)
+            region = ['江苏省','南京市','全部']
+            this.setData({
+                region: region
+            })
+            return
         }
-        let data={}
-        console.log("type:"+t)
-        //由于先在只有江苏省的数据所以 全部 全部 全部=江苏省 全部 全部
-        if(t==0||t==1){
-            data={}
-        }//XX省 XX市 全部 XX省 XX市 XX区
-        else {
-            data={city: region}
-        }
-        let that=this;
         // 显示loading框
         wx.showLoading({
             title: '加载中',
         })
-        API.Request('https://njtech.bamlubi.cn/get_detailed_data', data, 'GET', '获取风险地区').then(res => {
-            let _markers = [];
-            for (let item of res) {
-                if(t==3&&item["adcode"]!=postcode){
-                    continue;
-                }
-                let type = 2;
-                if (item["risk_level"] == "高风险") {
-                    type = 0;
-                } else if (item["risk_level"] == "中风险") {
-                    type = 1;
-                }
-                let point = new util.createPoit(item["flag"], item["lat"], item["lng"], item["title"], type);
-                point.address = item["address"];
-                point.risk_level = item["risk_level"];
-                _markers.push(point);
+        // 获取风险地区列表
+        RiskareaDB.getRiskareaList(...region).then(res => {
+            // 如果没数据则展示
+            if (res.length == 0){
+                API.ShowToast('暂时没有数据','none');
+                region =  ['江苏省', '南京市', '全部']
+                return
             }
             // 地图中心转移
-            if(_markers!=""){
-                that.mapCtx.moveToLocation({
-                    latitude: parseFloat(_markers[0].latitude),
-                    longitude: parseFloat(_markers[0].longitude),
+            that.mapCtx.moveToLocation({
+                latitude: parseFloat(res[0].latitude),
+                longitude: parseFloat(res[0].longitude),
             })
-            }
             that.setData({
-                markers: _markers,
+                markers: res,
                 hasMarkers: true,
-                scale:8
+                scale: 14
             })
-        }).then(res=>{
+        }).then(res => {
             // 隐藏loading框
             wx.hideLoading()
+            // 同步视图
+            this.setData({
+                region: region
+            })
+        }).catch(err => {
+            // 隐藏loading框
+            wx.hideLoading()
+            // 显示查询失败
+            API.ShowToast('查询失败', 'error')
+            console.error(err);
         })
     },
+
     /**
      * 点击定位按钮，移动视图到现在所在位置
      * 考虑到用户会移动，因此必须再次获取用户位置
@@ -178,7 +141,7 @@ Page({
     locate: function () {
         let that = this
         wx.showLoading({
-          title: '定位中',
+            title: '定位中',
         })
         // 获取用户最新位置
         wx.getLocation({
@@ -199,7 +162,7 @@ Page({
                 notShowLabel: true,
                 scale: 14
             })
-        }).catch(err=>{
+        }).catch(err => {
             wx.hideLoading()
             API.ShowToast('定位失败', 'error')
         })
@@ -226,7 +189,7 @@ Page({
         this.mapCtx.moveToLocation({
             latitude: parseFloat(marker.latitude),
             longitude: parseFloat(marker.longitude),
-        }).then(res=>{
+        }).then(res => {
             that.setData({
                 // callout_id: e.detail.markerId,
                 address: marker.address,
@@ -271,8 +234,6 @@ Page({
                 return x.distance <= 50
             })
         })
-        // console.log(this.data.distance_list)
-        // console.log(list_temp)
         this.selectComponent('#bottomFrame').showFrame();
     },
 
@@ -298,7 +259,11 @@ Page({
         // 隐藏离我最近列表
         this.selectComponent('#bottomFrame').hideFrame()
         // 主动触发marker点击事件
-        this.markertap({detail: {markerId: markerId}})
+        this.markertap({
+            detail: {
+                markerId: markerId
+            }
+        })
     },
 
     hideLabel: function () {
