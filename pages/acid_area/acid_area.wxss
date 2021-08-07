@@ -162,6 +162,9 @@
     -webkit-box-shadow: 0px 0px 2px #e2e2e2;
     box-shadow: 0px 0px 2px #e2e2e2;
   }
+  .scroll-view-height{
+    height: 50vh;
+  }
   .msg-item {
     width: 100%;
   }
