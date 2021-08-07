@@ -1,5 +1,4 @@
 // miniprogram/db/news_db.js
-// Package all wechat API into Promise Object
 
 const Promise = require('../promise/es6-promise.min.js')
 const CloudDB = require("../promise/wxCloudDB.js")
