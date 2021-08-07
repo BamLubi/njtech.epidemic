@@ -138,7 +138,7 @@ Page({
       wx.showLoading({
           title: '加载中',
       })
-      // 获取风险地区列表
+      // 获取核酸地区列表
           let res=this.getAcidareaList(region[0],region[1],region[2])
           // 如果没数据则展示
           if (res.length == 0){
