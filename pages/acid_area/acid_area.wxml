@@ -1,7 +1,7 @@
 <!--pages/risk_area/risk_area.wxml-->
 <view class="map">
     <!-- 地图 -->
-    <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}" bindmarkertap="markertap" scale="{{scale}}"
+    <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}" bindmarkertap="markertap" bindtap="hideLabel" scale="{{scale}}"
         show-location="true">
     </map>
     <!-- 搜索框 -->
@@ -40,9 +40,7 @@
             <!-- 标题栏 -->
             <view class="place_info_h margin-top margin-bottom">
                 <!-- 地点 -->
-                <view class="text-black text-xl" style="margin-left: 20rpx;">{{title}}</view>
-                <!-- 关闭图标 -->
-                <view class="cuIcon-close close" bindtap="close"></view>
+                <view class="text-black text-xl" style="margin-left: 20rpx;margin-bottom:5rpx;">{{title}}</view>
             </view>
             <!-- 与我距离 -->
             <view class="place_info_h">

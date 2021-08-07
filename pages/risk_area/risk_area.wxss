@@ -95,10 +95,6 @@
     align-items: center;
 }
 
-.place_info_h .close{
-    position: absolute;
-    right: 20rpx;
-}
 
 .place_info_title {
     font-size: 35rpx;

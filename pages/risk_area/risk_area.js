@@ -239,14 +239,6 @@ Page({
         });
     },
 
-    /**
-     * 关闭气泡
-     */
-    close: function () {
-        this.setData({
-            notShowLabel: true
-        })
-    },
 
     /**
      * 显示离我最近的风险地区

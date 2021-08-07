@@ -157,20 +157,12 @@ Page({
         this.setData({
             address: marker.address,
             title: marker.title,
-            distance: util.getDistance(parseFloat(this.data.la), parseFloat(this.data.ln), parseFloat(marker.latitude), parseFloat(marker.longitude))+"km",
+            distance: util.getDistance(parseFloat(this.data.la), parseFloat(this.data.ln), parseFloat(marker.latitude), parseFloat(marker.longitude)),
             notShowLabel: false,
             tele:marker.tel
         })
     },
 
-    /**
-     * 关闭气泡
-     */
-    close: function () {
-        this.setData({
-            notShowLabel: true
-        })
-    },
     /**
      * 弹窗
      * 进行距离计算排序
@@ -277,7 +269,7 @@ Page({
       scale:15,
       address: marker.address,
       title: marker.title,
-      distance: util.getDistance(parseFloat(this.data.la), parseFloat(this.data.ln), parseFloat(marker.latitude), parseFloat(marker.longitude))+"km",
+      distance: util.getDistance(parseFloat(this.data.la), parseFloat(this.data.ln), parseFloat(marker.latitude), parseFloat(marker.longitude)),
       notShowLabel: false,
       tele:marker.tel
     })
@@ -286,5 +278,11 @@ Page({
         latitude: parseFloat(marker.latitude),
         longitude: parseFloat(marker.longitude),
     });
+  },
+  //隐藏信息框
+  hideLabel: function () {
+    this.setData({
+        notShowLabel: true
+    })
   }
 })

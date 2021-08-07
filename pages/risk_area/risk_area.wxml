@@ -31,11 +31,9 @@
             <!-- 标题栏 -->
             <view class="place_info_h margin-top margin-bottom">
                 <!-- 风险等级 -->
-                <view class="cu-tag bg-red text-white margin-right-sm">{{level}}</view>
+                <view class="cu-tag bg-red text-white margin-right-sm margin-left-sm">{{level}}</view>
                 <!-- 地点 -->
                 <view class="text-black text-xl">{{title}}</view>
-                <!-- 关闭图标 -->
-                <view class="cuIcon-close close" bindtap="close"></view>
             </view>
             <!-- 与我距离 -->
             <view class="place_info_h">
