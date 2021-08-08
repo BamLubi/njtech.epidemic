@@ -8,19 +8,20 @@ const Util = require("../utils/util.js")
 
 /**
  * 获取新闻列表
- * @param {*} start 
+ * @param {*} page 
  * @param {*} num 
  * @param {*} city 
  */
-function getNewsList(start = 0, num = 3, city = '') {
+function getNewsList(page = 1, num = 10, province = '') {
     return new Promise(function (resolve, reject) {
-        let url = "https://lab.isaaclin.cn/nCoV/api/news"
+        let url = "https://njtech.bamlubi.cn/get_news_data"
         let data = {
-            page: 1,
-            num: num
+            page: page,
+            num: num,
+            province: province
         }
         API.Request(url, data, 'GET', '获取新闻').then(res => {
-            let data = res.results
+            let data = res
             data.filter(function (x) {
                 x.pubDate = Util.formatTime(new Date(parseInt(x.pubDate)));
             })
