@@ -30,6 +30,9 @@ function getRiskareaList(province = '江苏省', city = '南京市', district = 
             for (let item of res) {
                 // 判断是否需要过滤地区
                 if (flg && item["district"] != district) continue;
+                // 如果经纬度超过范围或者为空则跳过
+                if (!isLegalCoor(item["lat"], item["lng"])) continue;
+                // 构造marker数据
                 let type = 2;
                 if (item["risk_level"] == "高风险") {
                     type = 0;
@@ -47,6 +50,23 @@ function getRiskareaList(province = '江苏省', city = '南京市', district = 
             reject(err)
         })
     })
+}
+
+/**
+ * 判断是否是合法的坐标
+ * @param {string | number} lat 纬度
+ * @param {string | number} lng 经度
+ */
+function isLegalCoor(lat, lng) {
+    // 判断为空
+    if (lat == null || lng == null || lat == '' || lng == '') return false;
+    // 先格式化为浮点型
+    lat = typeof (lat) == 'string' ? parseFloat(lat) : lat;
+    lng = typeof (lng) == 'string' ? parseFloat(lng) : lat;
+    // 判断是否合法
+    if (lat < -90 || lat > 90) return false;
+    if (lng < -180 || lng > 180) return false;
+    return true;
 }
 
 module.exports = {
