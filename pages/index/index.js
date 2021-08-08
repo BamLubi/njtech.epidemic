@@ -68,8 +68,6 @@ Page({
     let that = this;
     // 获取五条最新的新闻信息
     NewsDB.getNewsList(1, 3).then(res => {
-      console.log("获取新闻成功")
-      console.log(this.data.selectid)
       that.setData({
         news: res
       })
