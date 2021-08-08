@@ -4,38 +4,38 @@
     <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}"
         bindmarkertap="markertap" bindtap="hideLabel" scale="{{scale}}" show-location="true">
     </map>
+    <!-- 顶部工具栏 -->
     <view class="top_box">
         <!-- 地区选择器 -->
         <view class="section_box">
-        <view class="section">
-            <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-                <view class="picker">
-                    {{region[0]}}-{{region[1]}}-{{region[2]}}
-                </view>
-            </picker>
-        </view>
+            <view class="section">
+                <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
+                    <view class="picker text-black">
+                        {{region[0]}}-{{region[1]}}-{{region[2]}}
+                    </view>
+                </picker>
+            </view>
         </view>
         <!-- 搜索框 -->
         <view class="search_box">
-        <view class='uinn'>
-            <view class="weui-search-bar flex-row uinn bg_white mar-t">
-                <view class="weui-search-bar__form flex1 flex-row">
-                    <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
-                    <input type="text" class="weui-search-bar__input" placeholder="请输入查询的地点" value="{{inputVal}}" bindinput="inputTyping" class='flex1 mar-l' />
-                    <scroll-view class="scroll-view {{serachList.length==0?'':'scroll-view-height'}}" wx:if='{{viewShowed}}' scroll-y>
-                        <view wx:for="{{serachList}}" wx:key="marker_index" class="msg-item ">
-                            <view class='user-name' bindtap='name' data-index="{{item.marker_index}}">{{item.addr}}
+            <view class='uinn'>
+                <view class="weui-search-bar flex-row uinn bg_white mar-t">
+                    <view class="weui-search-bar__form flex1 flex-row">
+                        <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+                        <input class='flex1 mar-l weui-search-bar__input' type="text" placeholder="请输入查询的地点" value="{{inputVal}}" bindinput="inputTyping"/>
+                        <scroll-view class="scroll-view {{serachList.length==0?'':'scroll-view-height'}}" wx:if='{{viewShowed}}' scroll-y>
+                            <view wx:for="{{serachList}}" wx:key="marker_index" class="msg-item ">
+                                <view class='user-name' bindtap='name' data-index="{{item.marker_index}}">{{item.addr}}
+                                </view>
                             </view>
-                        </view>
-                    </scroll-view>
+                        </scroll-view>
+                    </view>
+                    <view class="weui-search-bar__cancel-btn" bindtap="hideInput">取消</view>
                 </view>
-                <view class="weui-search-bar__cancel-btn" bindtap="hideInput">取消</view>
             </view>
         </view>
-        </view>
     </view>
-    
-    <!-- 工具栏 -->
+    <!-- 侧边工具栏 -->
     <view class="tool_box">
         <!-- 距离最近核酸检测地区 按钮-->
         <view class="acid_box" bindtap='popup'>

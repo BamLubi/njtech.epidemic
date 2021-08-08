@@ -209,7 +209,7 @@
     border-radius: 50rpx;
   }
   .weui-search-bar__input {
-    height: 92rpx;
+    height: 60rpx;
   }
   .weui-icon-search_in-box {
     margin-left:20rpx;
