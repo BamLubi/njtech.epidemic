@@ -23,8 +23,8 @@
                     <view class="weui-search-bar__form flex1 flex-row">
                         <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
                         <input class='flex1 mar-l weui-search-bar__input' type="text" placeholder="请输入查询的地点" value="{{inputVal}}" bindinput="inputTyping"/>
-                        <scroll-view class="scroll-view {{serachList.length==0?'':'scroll-view-height'}}" wx:if='{{viewShowed}}' scroll-y>
-                            <view wx:for="{{serachList}}" wx:key="marker_index" class="msg-item ">
+                        <scroll-view class="scroll-view text-grey {{serachList.length==0?'':'scroll-view-height'}}" wx:if='{{viewShowed}}' scroll-y>
+                            <view wx:for="{{serachList}}" wx:key="marker_index" class="msg-item">
                                 <view class='user-name' bindtap='name' data-index="{{item.marker_index}}">{{item.addr}}
                                 </view>
                             </view>

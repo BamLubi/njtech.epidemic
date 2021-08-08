@@ -192,7 +192,7 @@
   .user-name {
     width: 100%;
     padding: 20rpx;
-    font-size: 33rpx;
+    font-size: 30rpx;
     border-bottom: 1px solid #e2e2e2;
   }
   /* 搜索栏 */
