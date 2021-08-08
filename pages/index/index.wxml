@@ -83,11 +83,11 @@
   </view>
   <!-- 列表 -->
   <view wx:for="{{citycases}}" wx:key="index" class="tr {{index % 2 == 0?'bg-g':'bg-w'}}">
-    <view class="td">{{item.cityName}}</view>
-    <view class="td text-orange text-bold">{{item.currentConfirmedCount}}</view>
+    <view class="td {{item.currentConfirmedCount!=0?'text-bold':''}}">{{item.cityName}}</view>
+    <view class="td {{item.currentConfirmedCount!=0?'text-orange text-bold':'text-gray'}}">{{item.currentConfirmedCount}}</view>
     <view class="td">{{item.confirmedCount}}</view>
     <view class="td text-green">{{item.curedCount}}</view>
-    <view class="td text-red text-bold">{{item.highDangerCount}}</view>
-    <view class="td text-yellow text-bold">{{item.midDangerCount}}</view>
+    <view class="td {{item.highDangerCount!=0?'text-red text-bold':'text-gray'}}">{{item.highDangerCount}}</view>
+    <view class="td {{item.midDangerCount!=0?'text-yellow text-bold':'text-gray'}}">{{item.midDangerCount}}</view>
   </view>
 </view>
