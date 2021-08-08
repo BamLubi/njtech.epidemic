@@ -6,10 +6,10 @@ const API = require("../promise/wxAPI.js")
 const Util = require("../utils/util.js")
 
 /**
- * 获取新闻列表
- * @param {*} start 
- * @param {*} num 
- * @param {*} city 
+ * 获取指定省份、城市、地区的风险地区列表
+ * @param {string} province 省份
+ * @param {string} city 城市
+ * @param {string} district 地区
  */
 function getRiskareaList(province = '江苏省', city = '南京市', district = '') {
     return new Promise(function (resolve, reject) {
