@@ -48,8 +48,8 @@
   </scroll-view>
 </view>
 <!-- 数据更新时间 -->
-<view class="text-black text-sm flex justify-end padding-right-xs margin-top-xs margin-bottom-xs">
-  更新时间: {{casesUpdateTime}}
+<view class="text-gray text-sm flex justify-end padding-right-sm margin-top-xs margin-bottom-xs">
+  数据来自：丁香园，更新时间: {{casesUpdateTime}}
 </view>
 <!-- 概况数据 -->
 <view class="tools radius margin-left margin-right margin-bottom shadow shadow-lg bg-white cu-list grid col-4">
