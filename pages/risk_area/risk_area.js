@@ -202,7 +202,6 @@ Page({
         });
     },
 
-
     /**
      * 显示离我最近的风险地区
      * 进行距离计算排序
@@ -266,6 +265,9 @@ Page({
         })
     },
 
+    /**
+     * 隐藏气泡label
+     */
     hideLabel: function () {
         this.setData({
             notShowLabel: true
