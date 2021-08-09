@@ -40,9 +40,9 @@
 <!-- 滑块切换省份疫情数据 -->
 <view class="banner">
   <scroll-view scroll-x scroll-with-animation scroll-into-view="nav-{{select > 0 ? select -1 : select}}">
-    <view wx:for="{{Cdata}}" wx:for-index="index" wx:key="index" id="nav-{{index}}"
-      class="sort {{index == select ? 'choose text-bold' : 'text-gray'}}" data-pn="{{item}}" data-index="{{index}}" bindtap="getSelect">
-      {{item}}
+    <view wx:for="{{province}}" wx:key="index" id="nav-{{index}}"
+      class="sort {{index == select ? 'choose text-bold' : 'text-gray'}}" data-pn="{{item.postName}}" data-index="{{index}}" bindtap="getSelect">
+      {{item.name}}
       <view class="line" wx:if="{{index == select}}"></view>
     </view>
   </scroll-view>

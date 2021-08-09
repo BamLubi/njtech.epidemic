@@ -4,6 +4,7 @@ const util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
 const NewsDB = require("../../db/news_db.js")
 const OverallDB = require("../../db/overall_db.js")
+import {province} from "../../utils/province.js"
 Page({
 
   /**
@@ -58,7 +59,7 @@ Page({
     // 当前选择的省份
     select: 0,
     selectid: "江苏省",
-    Cdata: ["江苏省","湖北省","浙江省","河北省","山西省","安徽省","福建省","江西省","北京市","上海市","辽宁省","吉林省","黑龙江省","山东省","广东省","海南省","四川省","云南省","陕西省","青海省","甘肃省","贵州省","重庆市","湖南省","河南省","黑龙江省","山西省","天津市","广西壮族自治区","新疆维吾尔自治区","宁夏回族自治区","内蒙古自治区"],
+    province: province,
   },
 
   /**
