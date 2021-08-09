@@ -16,7 +16,7 @@ function getProvinceOverall(province = '江苏省') {
         }, 'GET', `获取${province}的总体确诊情况`).then(res => {
             let data = res[0]
             // 转换时间
-            data.updateTime = Util.formatTime(new Date(parseInt(data.updateTime)))
+            data.updateTime = Util.formatTime(new Date(parseInt(data.updateTime)*1000))
             // 回调
             resolve(data)
         }).catch(err => {
