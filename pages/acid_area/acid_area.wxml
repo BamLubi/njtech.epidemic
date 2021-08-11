@@ -5,35 +5,32 @@
         bindmarkertap="markertap" bindtap="hideLabel" scale="{{scale}}" show-location="true">
     </map>
     <!-- 顶部工具栏 -->
-    <view class="top_box">
-        <!-- 地区选择器 -->
-        <view class="section_box">
-            <view class="section">
+    <view class="top_box cu-bar search bg-white shadow shadow-lg bg-white">
+        <!-- 工具栏 -->
+        <view class="tools margin-top-sm margin-bottom-sm">
+            <!-- 地区选择器 -->
+            <view class="action">
                 <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-                    <view class="picker text-black">
-                        {{region[0]}}-{{region[1]}}-{{region[2]}}
-                    </view>
+                    <text>{{region[0]}}-{{region[1]}}-{{region[2]}}</text>
+                    <text class="cuIcon-triangledownfill"></text>
                 </picker>
             </view>
-        </view>
-        <!-- 搜索框 -->
-        <view class="search_box">
-            <view class='uinn'>
-                <view class="weui-search-bar flex-row uinn bg_white mar-t">
-                    <view class="weui-search-bar__form flex1 flex-row">
-                        <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
-                        <input class='flex1 mar-l weui-search-bar__input' type="text" placeholder="请输入查询的地点" value="{{inputVal}}" bindinput="inputTyping"/>
-                        <scroll-view class="scroll-view text-grey {{serachList.length==0?'':'scroll-view-height'}}" wx:if='{{viewShowed}}' scroll-y>
-                            <view wx:for="{{serachList}}" wx:key="marker_index" class="msg-item">
-                                <view class='user-name' bindtap='name' data-index="{{item.marker_index}}">{{item.addr}}
-                                </view>
-                            </view>
-                        </scroll-view>
-                    </view>
-                    <view class="weui-search-bar__cancel-btn" bindtap="hideInput">取消</view>
+            <!-- 搜索框 -->
+            <view class="search-form round">
+                <text class="cuIcon-search"></text>
+                <input type="text" placeholder="搜索核酸检测地点" style="padding-right: 0!important;" value="{{inputVal}}" bindinput="inputTyping"></input>
+                <!-- 取消按钮 -->
+                <view style="font-size: 30rpx;" bindtap="hideInput">
+                    <text class="cuIcon-close"></text>
                 </view>
             </view>
         </view>
+        <!-- 搜索结果显示列表 -->
+        <scroll-view wx:if='{{viewShowed}}' class="scroll-view text-grey bg-white shadow-warp" scroll-y scroll-with-animation enable-back-to-top enhanced fast-deceleration>
+            <view wx:for="{{serachList}}" wx:key="marker_index" class="msg-item">
+                <view class='user-name' bindtap='name' data-index="{{item.marker_index}}">{{item.addr}}</view>
+            </view>
+        </scroll-view>
     </view>
     <!-- 侧边工具栏 -->
     <view class="tool_box">

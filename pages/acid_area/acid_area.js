@@ -19,7 +19,7 @@ Page({
     ln: "",
     notShowLabel: true,
     distance_list: [],
-    scale: 10,
+    scale: 12,
     tele: "",
     viewShowed: false, //显示结果view的状态
     inputVal: "", // 搜索框值
@@ -110,7 +110,7 @@ Page({
       that.setData({
         markers: res,
         hasMarkers: true,
-        scale: 10,
+        scale: 12,
         region: region
       })
     }).then(res => {
@@ -154,7 +154,7 @@ Page({
       wx.hideLoading()
       that.setData({
         notShowLabel: true,
-        scale: 10
+        scale: 12
       })
     }).catch(err => {
       wx.hideLoading()
@@ -310,6 +310,7 @@ Page({
   // 隐藏信息框
   hideLabel: function () {
     this.setData({
+      inputVal: "",
       notShowLabel: true
     })
   }
