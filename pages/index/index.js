@@ -200,16 +200,14 @@ Page({
    * @param {*} e 
    */
   getSelect: function (e) {
-    console.log("你选择的省份为：" + e.currentTarget.dataset.pn)
-    let that = this
-    var index = e.currentTarget.dataset.index
-    var pn = e.currentTarget.dataset.pn
-    that.setData({
-      select: index,
-      selectid: pn
+    if (e.currentTarget.dataset.index == this.data.select){
+      return
+    }
+    this.setData({
+      select: e.currentTarget.dataset.index,
+      selectid: e.currentTarget.dataset.pn
     })
     // 获取疫情数据
     this.getOverall()
   }
-
 })

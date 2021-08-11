@@ -1,6 +1,6 @@
 <!--pages/index/index.wxml-->
 <!-- 通知栏 -->
-<van-notice-bar left-icon="volume-o" text="'e心e力'小程序正式上线啦！目前支持查看江苏省疫情数据、风险地区、核酸检测地点等功能，后续将不断整合各地信息，敬请期待~" />
+<van-notice-bar left-icon="volume-o" text="'e心e力'小程序正式上线啦！目前支持查看全国疫情数据和疫情资讯，支持查询江苏省风险地区、核酸检测地点等信息，后续将不断整合各地信息，敬请期待~" />
 
 <!-- 工具列表 -->
 <view class="tools radius margin shadow shadow-lg bg-white cu-list grid col-4">
