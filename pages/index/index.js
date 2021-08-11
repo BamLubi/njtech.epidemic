@@ -68,12 +68,13 @@ Page({
   onLoad: function (options) {
     let that = this;
     // 获取五条最新的新闻信息
-    NewsDB.getNewsList(1, 3).then(res => {
+    NewsDB.getNewsList(this.data.news.length, 3).then(res => {
       that.setData({
         news: res
       })
     }).catch(err => {
       API.ShowToast('网络请求失败', 'error')
+      console.log(err);
     })
     // 获取江苏省疫情数据
     this.getOverall()

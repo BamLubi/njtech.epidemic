@@ -8,17 +8,20 @@ const Util = require("../utils/util.js")
 
 /**
  * 获取新闻列表
- * @param {*} page 
- * @param {*} num 
- * @param {*} city 
+ * @param {*} length 已有数据长度
+ * @param {*} num 获取数据长度
+ * @param {*} province 省份
  */
-function getNewsList(page = 1, num = 10, province = '') {
+function getNewsList(length = 0, num = 10, province = '') {
     return new Promise(function (resolve, reject) {
         let url = "https://njtech.bamlubi.cn/get_news_data"
+        let page = Math.ceil(length / num)
         let data = {
-            page: page,
-            num: num,
-            province: province
+            page: page ? page : 1,
+            num: num
+        }
+        if (province != '') {
+            data.province = province
         }
         API.Request(url, data, 'GET', '获取新闻').then(res => {
             let data = res
