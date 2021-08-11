@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "疫情资讯",
   "enablePullDownRefresh": true,
+  "onReachBottomDistance": 1,
   "usingComponents": {}
 }

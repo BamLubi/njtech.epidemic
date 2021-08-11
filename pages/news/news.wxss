@@ -10,4 +10,10 @@ swiper{
 	height: 100rpx;
 	margin-left: 40rpx;
 }
+
+.banner {
+	position: sticky;
+	top: 0;
+	z-index: 999;
+  }
   

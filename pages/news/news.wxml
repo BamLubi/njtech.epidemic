@@ -1,18 +1,30 @@
 <!--pages/news/news.wxml-->
-<!--picker-->
-<view class="section">
-  <picker bindchange="bindPickerChange" value="{{index}}" range="{{provinces}}">
-    <view class="row">
-      当前选择：{{provinces[index]}}
-    </view>
-  </picker>
+<!-- 顶部操作条 -->
+<view class="banner cu-bar search bg-white shadow shadow-lg bg-white">
+  <view class="action">
+    <picker bindchange="bindPickerChange" value="{{select}}" range="{{provinces}}" range-key="name">
+      <text>{{provinces[select].name}}</text>
+      <text class="cuIcon-triangledownfill"></text>
+    </picker>
+  </view>
+  <view class="search-form round">
+    <text class="cuIcon-search"></text>
+    <input type="text" placeholder="搜索新闻" confirm-type="search"></input>
+  </view>
 </view>
 
 <!-- 新闻内容 -->
 <view class="cu-list shadow menu bg-white text-sub sm-border">
   <view wx:for="{{news}}" wx:key="id" class="cu-item arrow" data-data="{{item}}" bindtap="showNews">
-    <view class="content">
+    <view class="content padding-top-sm padding-bottom-sm">
       <text>{{item.title}}</text>
+      <view class="text-gray text-sm">发布时间: {{item.pubDate}}</view>
     </view>
+  </view>
+  <!-- 显示更多信息 -->
+  <view class="margin-bottom">
+    <view wx:if="{{!hasMoreNews}}" class="cu-load over" />
+    <view wx:elif="{{isLoading}}" class="cu-load loading" />
+    <view wx:else class="cu-load text-center text-black">上拉加载更多</view>
   </view>
 </view>

@@ -2,63 +2,29 @@
 const app = getApp()
 const util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
+const NewsDB = require("../../db/news_db.js")
+import {
+  province
+} from "../../utils/province.js"
 Page({
   /**
    * 页面的初始数据
    */
   data: {
     news: [],
-    provinces:[],
-    myProvince:'',
-    myCity:'',
-    
+    provinces: province,
+    select: 0,
+    hasMoreNews: true,
+    isLoading: false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-
-   bindPickerChange: function(e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
-    this.setData({
-      index: e.detail.value,
-    })
-    this.onLoad()
-  },
-
-  getData:function(pro='江苏省'/*,ci='扬州市'*/){
-    wx.request({
-      url: 'https://njtech.bamlubi.cn/get_news_data',
-      data:{
-        page:1,
-        num:10,
-        province:pro,
-        //city:ci
-      },
-      success:res=>{
-        console.log(res.data)
-        this.setData({
-          news:res.data
-        })
-      }
-    })
-   },
-
   onLoad: function (options) {
-    //获取各个省
-    wx.request({
-      url: 'https://njtech.bamlubi.cn/get_provinceName',
-      data:{},
-      success:res=>{
-        console.log(res.data)
-        this.setData({
-          provinces:res.data
-        })
-      }
-    })
-
-    //获取该省新闻
-    this.getData(this.data.provinces[this.data.index]);
+    let that = this
+    // 获取新闻
+    this.getNewsList()
   },
 
   /**
@@ -93,27 +59,56 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    wx.showNavigationBarLoading() //在标题栏中显示加载
-      //模拟加载
-      setTimeout(function(){
-      // complete
-      wx.hideNavigationBarLoading() //完成停止加载
-      wx.stopPullDownRefresh() //停止下拉刷新
-      },1500);
+    this.setData({
+      news: []
+    })
+    // 获取新闻
+    this.getNewsList().then(res => {
+      wx.stopPullDownRefresh()
+    })
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    // 如果无数据了就不要再发请求了
+    if (!this.data.hasMoreNews) return;
+    // 节流
+    if (!this.data.isLoading) {
+      this.getNewsList()
+    }
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  getNewsList: function () {
+    let that = this
+    let num = 12
+    //获取该省新闻
+    wx.showLoading({
+      title: '加载中',
+    })
+    this.setData({
+      isLoading: true
+    })
+    return NewsDB.getNewsList(this.data.news.length, num, this.data.provinces[this.data.select].postName).then(res => {
+      // 更新视图
+      that.setData({
+        news: that.data.news.concat(res)
+      })
+      if (res.length < num) {
+        that.setData({
+          hasMoreNews: false
+        })
+      }
+      that.setData({
+        isLoading: false
+      })
+      wx.hideLoading()
+    }).catch(err => {
+      wx.hideLoading()
+      API.ShowToast('网络请求失败', 'error')
+      console.log(err)
+    })
   },
 
   /**
@@ -128,5 +123,15 @@ Page({
     wx.navigateTo({
       url: url
     })
-  }
+  },
+
+  bindPickerChange: function (e) {
+    this.setData({
+      select: e.detail.value,
+      news: [],
+      hasMoreNews: true
+    })
+    // 获取新闻
+    this.getNewsList()
+  },
 })
