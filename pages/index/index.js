@@ -68,7 +68,7 @@ Page({
   onLoad: function (options) {
     let that = this;
     // 获取五条最新的新闻信息
-    NewsDB.getNewsList(this.data.news.length, 3).then(res => {
+    NewsDB.getNewsList(this.data.news.length, 3, 0).then(res => {
       that.setData({
         news: res
       })
