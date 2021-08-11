@@ -3,9 +3,7 @@ const app = getApp()
 const util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
 const NewsDB = require("../../db/news_db.js")
-import {
-  province
-} from "../../utils/province.js"
+import {province} from "../../utils/province.js"
 Page({
   /**
    * 页面的初始数据
@@ -14,15 +12,19 @@ Page({
     news: [],
     provinces: province,
     select: 0,
+    type: 1,// 获取新闻类型，1为省、2为市
+    postdata: '',// 网络请求时附带参数，省份名称或城市名称
     hasMoreNews: true,
-    isLoading: false
+    isLoading: false,
+    inputVal: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let that = this
+    // 设置请求内容
+    this.data.postdata = this.data.provinces[this.data.select].postName
     // 获取新闻
     this.getNewsList()
   },
@@ -59,6 +61,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+    // 置空源数据
     this.setData({
       news: []
     })
@@ -80,6 +83,9 @@ Page({
     }
   },
 
+  /**
+   * 获取新闻列表
+   */
   getNewsList: function () {
     let that = this
     let num = 12
@@ -90,7 +96,7 @@ Page({
     this.setData({
       isLoading: true
     })
-    return NewsDB.getNewsList(this.data.news.length, num, this.data.provinces[this.data.select].postName).then(res => {
+    return NewsDB.getNewsList(this.data.news.length, num, this.data.type, this.data.postdata).then(res => {
       // 更新视图
       that.setData({
         news: that.data.news.concat(res)
@@ -125,13 +131,57 @@ Page({
     })
   },
 
+  /**
+   * 省份切换
+   * @param {*} e 
+   */
   bindPickerChange: function (e) {
     this.setData({
       select: e.detail.value,
       news: [],
       hasMoreNews: true
     })
+    // 设置为获取省
+    this.data.type = 1
+    // 设置请求内容
+    this.data.postdata = this.data.provinces[this.data.select].postName
     // 获取新闻
     this.getNewsList()
   },
+
+  search: function(e){
+    let city = e.detail.value
+    // 如果没输入则返回
+    if (city == null || city == ''){
+      return
+    }
+    // 判断用户是否输入“市”
+    if(city.indexOf("市") == -1){
+      city += '市'
+    }
+    // 判断用户输入了市，但是还包含其他内容
+    if (city.indexOf("市") != city.length - 1){
+      API.ShowModal('','请按如下格式输入城市：南京市',false)
+      return
+    }
+    // 设置为获取市
+    this.data.type = 2
+    // 设置请求内容
+    this.data.postdata = city
+    // 置空源数据
+    this.setData({
+      news: []
+    }) 
+    // 发起网络请求
+    this.getNewsList()
+  },
+
+  /**
+   * 清除输入框内容
+   */
+  hideInput: function(){
+    this.setData({
+      inputVal: ""
+    })
+  }
 })

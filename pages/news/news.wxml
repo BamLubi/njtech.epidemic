@@ -9,7 +9,11 @@
   </view>
   <view class="search-form round">
     <text class="cuIcon-search"></text>
-    <input type="text" placeholder="搜索新闻" confirm-type="search"></input>
+    <input type="text" placeholder="搜索指定城市新闻，如输入'南京市'" value="{{inputVal}}" type="text" confirm-type="查询" bindconfirm="search"></input>
+    <!-- 取消按钮 -->
+    <view style="font-size: 30rpx;" bindtap="hideInput">
+        <text class="cuIcon-close"></text>
+    </view>
   </view>
 </view>
 
@@ -22,7 +26,7 @@
     </view>
   </view>
   <!-- 显示更多信息 -->
-  <view class="margin-bottom">
+  <view>
     <view wx:if="{{!hasMoreNews}}" class="cu-load over" />
     <view wx:elif="{{isLoading}}" class="cu-load loading" />
     <view wx:else class="cu-load text-center text-black">上拉加载更多</view>
