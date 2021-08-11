@@ -20,7 +20,7 @@ Page({
         level: "",
         notShowLabel: true,
         distance_list: [],
-        scale: 14,
+        scale: 12,
         // 地区选择器
         region: ['江苏省', '南京市', '全部'],
         customItem: '全部'
@@ -116,7 +116,7 @@ Page({
             that.setData({
                 markers: res,
                 hasMarkers: true,
-                scale: 10
+                scale: 12
             })
         }).then(res => {
             // 隐藏loading框
@@ -160,7 +160,7 @@ Page({
             wx.hideLoading()
             that.setData({
                 notShowLabel: true,
-                scale: 14
+                scale: 15
             })
         }).catch(err => {
             wx.hideLoading()
@@ -197,7 +197,7 @@ Page({
                 distance: util.getDistance(parseFloat(this.data.la), parseFloat(this.data.ln), parseFloat(marker.latitude), parseFloat(marker.longitude)),
                 level: r_level,
                 notShowLabel: false,
-                scale: 14
+                scale: 15
             })
         });
     },

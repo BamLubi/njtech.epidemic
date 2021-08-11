@@ -6,11 +6,10 @@
     </map>
     <!-- 地区选择器 -->
     <view class="section_box">
-        <view class="section">
+        <view class="bg-white radius padding-sm shadow-warp">
             <picker mode="region" bindchange="bindRegionChange" value="{{region}}" custom-item="{{customItem}}">
-                <view class="picker">
-                    {{region[0]}}-{{region[1]}}-{{region[2]}}
-                </view>
+                <text>{{region[0]}}-{{region[1]}}-{{region[2]}}</text>
+                <text class="cuIcon-triangledownfill"></text>
             </picker>
         </view>
     </view>
