@@ -32,9 +32,12 @@
 
 <!-- 疫情数据 -->
 <view class="cu-bar bg-white margin-top">
-  <view class="action">
+  <view class="action" style="align-items: flex-end;">
     <text class="cuIcon-titles text-red"></text>
     <text class="text-xl text-bold">疫情数据</text>
+    <view class="margin-left text-sm" bindtap="navigateDisclaimer">
+      <text class="cuIcon-info text-gray"> 免责声明</text>
+    </view>
   </view>
 </view>
 <!-- 滑块切换省份疫情数据 -->

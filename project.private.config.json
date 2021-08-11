@@ -53,6 +53,12 @@
                     "pathName": "pages/acid_area/acid_area",
                     "query": "",
                     "scene": null
+                },
+                {
+                    "name": "免责声明",
+                    "pathName": "pages/disclaimer/disclaimer",
+                    "query": "",
+                    "scene": null
                 }
             ]
         }

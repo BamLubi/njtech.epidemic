@@ -1,0 +1,15 @@
+<!--pages/disclaimer/disclaimer.wxml-->
+<!-- logo -->
+<view class="logo bg-white padding-top">
+    <image src="/images/logo.png"></image>
+</view>
+<view class="padding bg-white" style="width: 100vw;height: 100vh;">
+    <view class="text-black text-blod text-xl margin-bottom-xs">关于我们</view>
+    <view class="text-sub">
+        “e心e力”小程序为公益项目，旨在帮助用户了解身边的疫情信息，由南京工业大学计算机学院抗疫青年团队共同志愿开发维护。数据均采集于卫健委、政府官方网站、地方政府认证公众号、丁香园等可靠、可信机构。本团队只负责数据的采集、审核和展示，不捏造篡改数据，所有数据均有可信来源。如有疑问请联系客服。
+    </view>
+    <view class="text-black text-blod text-xl margin-bottom-xs margin-top">免责声明</view>
+    <view class="text-sub">
+        因信息搜集、录入以及数据转化过程中，存在失误的可能性，地图坐标信息也可能出现技术偏差，因此“e心e力”定位信息仅供参考，最终信息以官方发布文字为准，“e心e力”无法承担相关审查监督责任，敬请谅解。
+    </view>
+</view>

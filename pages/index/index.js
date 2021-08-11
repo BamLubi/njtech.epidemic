@@ -209,5 +209,11 @@ Page({
     })
     // 获取疫情数据
     this.getOverall()
+  },
+
+  navigateDisclaimer: function(){
+    wx.navigateTo({
+      url: '/pages/disclaimer/disclaimer',
+    })
   }
 })
