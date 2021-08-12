@@ -55,7 +55,7 @@
   数据来自：丁香园，更新时间: {{casesUpdateTime}}
 </view>
 <!-- 概况数据 -->
-<view class="tools radius margin-left margin-right margin-bottom shadow shadow-lg bg-white cu-list grid col-4">
+<view class="tools radius margin-left margin-right shadow-warp bg-white cu-list grid col-4">
   <view class="cu-item">
     <view class="text-xl text-orange">{{cases.currentConfirmedCount}}</view>
     <view class="text-sm">现存确诊</view>
@@ -73,10 +73,14 @@
     <view class="text-sm">累计治愈</view>
   </view>
 </view>
+<!-- 数据更新时间 -->
+<view class="text-gray text-sm flex justify-end padding-right-sm margin-top-xs margin-bottom-xs">
+  部分地区未明确病例分区归属，因此总体数据会有出入
+</view>
 <!-- 疫情数据表格 -->
-<view class="margin-top">
+<view>
   <!-- 表头 -->
-  <view class="tr bg-grey text-sm">
+  <view class="tr text-sm" style="background-color: #00b9f1;">
     <view class="th">城市</view>
     <view class="th">现存确诊</view>
     <view class="th">累计确诊</view>

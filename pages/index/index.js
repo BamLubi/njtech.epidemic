@@ -186,6 +186,19 @@ Page({
         // 获取省内各城市数据
         return OverallDB.getCityOverall(that.data.selectid)
       }).then(res => {
+        // 判断各市现存确诊加起来是不是等于总体的数据
+        let _total = 0
+        res.filter(function(x){
+          _total += parseInt(x.currentConfirmedCount)
+        })
+        if(_total != that.data.cases.currentConfirmedCount){
+          res.filter(function(x){
+            if(x.cityName == '境外输入'){
+              x.currentConfirmedCount = "—"
+            }
+          })
+        }
+        // 更新数据
         that.setData({
           citycases: res
         })
