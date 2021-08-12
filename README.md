@@ -6,7 +6,7 @@
 
 # 微信扫码预览
 
-<img src="https://picgo-1256052225.cos.ap-guangzhou.myqcloud.com/img/20210806140220.jpg" style="zoom: 50%;" />
+<img src="https://picgo-1256052225.cos.ap-guangzhou.myqcloud.com/img/20210812161335.jpg" style="zoom: 50%;" />
 
 # 主要功能
 

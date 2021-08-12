@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText":"自费核酸检测地点",
+  "navigationBarTitleText":"核酸检测地点",
     "usingComponents": {
       "bottomFrame":"../risk_area/bottomFrame/bottomFrame"
     }

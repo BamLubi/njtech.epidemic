@@ -16,9 +16,9 @@ const Util = require("../utils/util.js")
 function getNewsList(length = 0, num = 10, type = 0, postdata = '') {
     return new Promise(function (resolve, reject) {
         let url = "https://njtech.bamlubi.cn/get_news_data"
-        let page = Math.ceil(length / num)
+        let page = Math.ceil(length / num) + 1
         let data = {
-            page: page ? page : 1,
+            page: page,
             num: num
         }
         // 更具请求类型判断是获取全国、省、市
@@ -27,7 +27,8 @@ function getNewsList(length = 0, num = 10, type = 0, postdata = '') {
         } else if (type == 2) {
             data.city = postdata
         }
-        API.Request(url, data, 'GET', '获取新闻').then(res => {
+        // console.log(data);
+        API.Request(url, data, 'GET', `获取新闻${page}-${num}`).then(res => {
             let data = res
             data.filter(function (x) {
                 x.pubDate = Util.formatTime(new Date(parseInt(x.pubDate)));

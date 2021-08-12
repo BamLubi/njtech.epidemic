@@ -4,7 +4,9 @@ const util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
 const NewsDB = require("../../db/news_db.js")
 const OverallDB = require("../../db/overall_db.js")
-import {province} from "../../utils/province.js"
+import {
+  province
+} from "../../utils/province.js"
 Page({
 
   /**
@@ -41,6 +43,12 @@ Page({
       type: 'page'
     }, {
       id: 3,
+      name: '病例轨迹',
+      src: '/images/index/guiji.png',
+      path: '',
+      type: 'page'
+    }, {
+      id: 4,
       name: '通信行程卡',
       src: '/images/index/xingcheng.png',
       path: '/',
@@ -49,6 +57,19 @@ Page({
         wx.navigateToMiniProgram({
           appId: 'wx8f446acf8c4a85f5',
           envVersion: 'release',
+        })
+      }
+    }, {
+      id: 5,
+      name: '苏康码',
+      src: '/images/index/jiankangma.png',
+      path: '/',
+      type: 'button',
+      func: () => {
+        wx.navigateToMiniProgram({
+          appId: 'wx10721f536f3e1af5',
+          envVersion: 'release',
+          shortLink: "#小程序://苏服办/江苏政务/zWAyPk5TwnqjEeB"
         })
       }
     }],
@@ -188,12 +209,12 @@ Page({
       }).then(res => {
         // 判断各市现存确诊加起来是不是等于总体的数据
         let _total = 0
-        res.filter(function(x){
+        res.filter(function (x) {
           _total += parseInt(x.currentConfirmedCount)
         })
-        if(_total != that.data.cases.currentConfirmedCount){
-          res.filter(function(x){
-            if(x.cityName == '境外输入'){
+        if (_total != that.data.cases.currentConfirmedCount) {
+          res.filter(function (x) {
+            if (x.cityName == '境外输入') {
               x.currentConfirmedCount = "—"
             }
           })
@@ -213,7 +234,7 @@ Page({
    * @param {*} e 
    */
   getSelect: function (e) {
-    if (e.currentTarget.dataset.index == this.data.select){
+    if (e.currentTarget.dataset.index == this.data.select) {
       return
     }
     this.setData({
@@ -224,7 +245,7 @@ Page({
     this.getOverall()
   },
 
-  navigateDisclaimer: function(){
+  navigateDisclaimer: function () {
     wx.navigateTo({
       url: '/pages/disclaimer/disclaimer',
     })
