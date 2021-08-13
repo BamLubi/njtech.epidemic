@@ -162,6 +162,7 @@ function GetUserProfile() {
     return new Promise(function (resolve, reject) {
         wx.getUserProfile({
             desc: "完善用户个人信息",
+            lang: "zh_CN",
             success: res => {
                 console.log("[wxAPI] [获取用户信息] success: ", res.userInfo)
                 resolve(res.userInfo)

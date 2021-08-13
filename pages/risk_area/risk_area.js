@@ -3,6 +3,9 @@ const app = getApp()
 const util = require('../../utils/util.js')
 const API = require("../../promise/wxAPI.js")
 const RiskareaDB = require("../../db/riskarea_db.js")
+import {
+    province
+} from "../../utils/province.js"
 Page({
     /**
      * 页面的初始数据
@@ -31,12 +34,40 @@ Page({
      */
     onLoad: function (options) {
         let that = this;
+        // 显示弹框获取用户所在地，并且随后存入全局
+        if (!app.globalData.hasUserInfo) {
+            return API.ShowModal('获取所在地', '点击确定以获取您所在地!', false).then(() => {
+                return API.GetUserProfile()
+            }).then(res => {
+                // 确定真是的省份名称和城市名称
+                res.province = that.whichProvince(res.province)
+                res.city = res.city + '市'
+                app.globalData.userInfo = res
+                app.globalData.hasUserInfo = true
+                // 存入本地缓存
+                wx.setStorage({
+                    key: "userInfo",
+                    data: res
+                })
+                // 重新调用onLoad
+                that.onLoad()
+            }).catch(err => {
+                API.ShowToast('获取失败', 'error')
+                console.error(err);
+            })
+        }
+        // 设置用户所在地
+        let province = app.globalData.userInfo.province
+        let city = app.globalData.userInfo.city
+        this.setData({
+            region: [province, city, '全部']
+        })
         // 显示loading框
         wx.showLoading({
             title: '加载中',
         })
         // 获取风险地区列表
-        RiskareaDB.getRiskareaList('江苏省', '南京市').then(res => {
+        RiskareaDB.getRiskareaList(province, city).then(res => {
             that.setData({
                 markers: res,
                 hasMarkers: true
@@ -54,19 +85,23 @@ Page({
     },
 
     /**
+     * 判断省份、直辖市、自治区的具体名称
+     * @param {*} target 
+     */
+    whichProvince: function (target) {
+        // 需要查看到底是哪个省、直辖市、自治区
+        for (let index in province) {
+            if (province[index].name.indexOf(target) != -1) {
+                return province[index].name
+            }
+        }
+    },
+
+    /**
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function () {},
 
-    /**
-     * 当map组件渲染完成时触发
-     * @param {*} params 
-     */
-    moveToMyLocation: function (params) {
-        // this.mapCtx = wx.createMapContext('myMap')
-        // // map组件渲染完成时，获取MAP组件，并移动到用户所在位置
-        // this.mapCtx.moveToLocation()
-    },
     /**
      * 选择想要查看的地区
      * 并对数据进行筛选
