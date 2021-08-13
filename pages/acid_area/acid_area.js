@@ -44,26 +44,13 @@ Page({
         markers: res,
         hasMarkers: true
       })
-      // 获取用户位置
-      return wx.getLocation({
-        type: 'wgs84'
-      })
-    }).then(res => {
-      // 不需要实时渲染的数据，尽量不使用this.setData
-      that.data.la = res.latitude;
-      that.data.ln = res.longitude;
-      // map组件渲染完成时，获取MAP组件，并移动到用户所在位置
-      that.mapCtx = wx.createMapContext('myMap')
-      that.mapCtx.moveToLocation({
-        latitude: parseFloat(res.latitude),
-        longitude: parseFloat(res.longitude),
-      })
-      // 隐藏加载框
       wx.hideLoading()
+      // 定位用户当前位置
+      that.locate()
     }).catch(err => {
       // 隐藏加载框
       wx.hideLoading()
-      API.ShowToast('定位失败', 'error')
+      API.ShowToast('加载失败', 'error')
       console.error(err);
     })
   },
@@ -102,6 +89,10 @@ Page({
         region = ['江苏省', '南京市', '全部']
         return
       }
+      // 判断mapXtx是否存在_important
+      if (that.mapCtx == null || that.mapCtx == undefined) {
+        that.mapCtx = wx.createMapContext('myMap')
+      }
       // 地图中心转移
       that.mapCtx.moveToLocation({
         latitude: parseFloat(res[0].latitude),
@@ -110,8 +101,7 @@ Page({
       that.setData({
         markers: res,
         hasMarkers: true,
-        scale: 12,
-        region: region
+        scale: 12
       })
     }).then(res => {
       // 隐藏loading框
@@ -145,6 +135,10 @@ Page({
       // 不需要实时渲染的数据，尽量不使用this.setData
       that.data.la = res.latitude
       that.data.ln = res.longitude
+      // 判断mapXtx是否存在_important
+      if (that.mapCtx == null || that.mapCtx == undefined) {
+        that.mapCtx = wx.createMapContext('myMap')
+      }
       // 移动位置
       return that.mapCtx.moveToLocation({
         latitude: parseFloat(res.latitude),
@@ -158,7 +152,7 @@ Page({
       })
     }).catch(err => {
       wx.hideLoading()
-      API.ShowToast('定位失败', 'error')
+      API.ShowModal('定位失败', "请确认已打开定位功能!", false)
     })
   },
 
@@ -172,6 +166,10 @@ Page({
       return x.id == e.detail.markerId;
     })[0];
     console.log(marker);
+    // 判断mapXtx是否存在_important
+    if (this.mapCtx == null || this.mapCtx == undefined) {
+      this.mapCtx = wx.createMapContext('myMap')
+    }
     // 移动视图中心
     this.mapCtx.moveToLocation({
       latitude: parseFloat(marker.latitude),
@@ -183,7 +181,8 @@ Page({
       title: marker.title,
       distance: util.getDistance(parseFloat(this.data.la), parseFloat(this.data.ln), parseFloat(marker.latitude), parseFloat(marker.longitude)),
       notShowLabel: false,
-      tele: marker.tel
+      tele: marker.tel,
+      scale: 15
     })
   },
 
@@ -200,21 +199,18 @@ Page({
       dis_obj.index = i
       dis_obj.address = marker[i].title
       dis_obj.distance = parseFloat(util.getDistance(parseFloat(this.data.la), parseFloat(this.data.ln), parseFloat(marker[i].latitude), parseFloat(marker[i].longitude)))
+      dis_obj.markerId = marker[i].id
       list_temp.push(dis_obj)
     }
     this.setData({
       distance_list: list_temp
     })
     // 排序
-    var property = "distance";
-    var self = this;
-    var arr = self.data.distance_list;
-    var sortRule = true; // 正序倒序
-    self.setData({
-      distance_list: arr.sort(self.compare(property, sortRule))
+    var arr = this.data.distance_list;
+    this.setData({
+      distance_list: arr.sort(this.compare("distance", true))
     })
-    // console.log(this.data.distance_list)
-    // console.log(list_temp)
+    // 显示列表
     this.selectComponent('#bottomFrame').showFrame();
   },
   compare: function (property, bol) {
@@ -228,16 +224,20 @@ Page({
       }
     }
   },
-  // 点击text，地图中心移动到该点
+
+  /**
+   * 离我最近列表中点击text，地图中心移动到该点
+   * @param {*} e 
+   */
   toMarker: function (e) {
-    var index = e.currentTarget.dataset.item_index
-    // console.log(e.currentTarget.dataset.item_index)
-    this.mapCtx.moveToLocation({
-      latitude: parseFloat(this.data.markers[index].latitude),
-      longitude: parseFloat(this.data.markers[index].longitude),
-    });
-    this.setData({
-      scale: 15
+    let markerId = e.currentTarget.dataset.marker_id
+    // 隐藏离我最近列表
+    this.selectComponent('#bottomFrame').hideFrame()
+    // 主动触发marker点击事件
+    this.markertap({
+      detail: {
+        markerId: markerId
+      }
     })
   },
 
@@ -245,7 +245,6 @@ Page({
    * 搜索框
    * 进行模糊搜索,点击跳转到对应点
    */
-  // 隐藏搜索框样式
   hideInput: function () {
     this.setData({
       inputVal: "",
@@ -253,7 +252,10 @@ Page({
     });
   },
 
-  // 键盘抬起事件2
+  /**
+   * 输入框，键盘抬起事件
+   * @param {*} e 
+   */
   inputTyping: function (e) {
     // console.log("input-----",e)
     var value = e.detail.value
@@ -288,9 +290,8 @@ Page({
   name: function (res) {
     // console.log(res.currentTarget.dataset.index);
     var index = res.currentTarget.dataset.index;
-    var that = this;
     let marker = that.data.markers[index];
-    that.setData({
+    this.setData({
       inputVal: marker.title,
       viewShowed: false,
       scale: 15,
@@ -300,6 +301,10 @@ Page({
       notShowLabel: false,
       tele: marker.tel
     })
+    // 判断mapXtx是否存在_important
+    if (this.mapCtx == null || this.mapCtx == undefined) {
+      this.mapCtx = wx.createMapContext('myMap')
+    }
     //移动试图到搜索到的点
     this.mapCtx.moveToLocation({
       latitude: parseFloat(marker.latitude),

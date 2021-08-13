@@ -41,26 +41,14 @@ Page({
                 markers: res,
                 hasMarkers: true
             })
-            // 获取用户位置
-            return wx.getLocation({
-                type: 'wgs84'
-            })
-        }).then(res => {
-            // 不需要实时渲染的数据，尽量不使用this.setData
-            that.data.la = res.latitude;
-            that.data.ln = res.longitude;
-            // map组件渲染完成时，获取MAP组件，并移动到用户所在位置
-            that.mapCtx = wx.createMapContext('myMap')
-            that.mapCtx.moveToLocation({
-                latitude: parseFloat(res.latitude),
-                longitude: parseFloat(res.longitude),
-            })
-            // 隐藏加载框
+            // 隐藏loading框
             wx.hideLoading()
+            // 定位用户当前位置
+            that.locate()
         }).catch(err => {
             // 隐藏加载框
             wx.hideLoading()
-            API.ShowToast('定位失败', 'error')
+            API.ShowToast('加载失败', 'error')
             console.error(err);
         })
     },
@@ -88,9 +76,9 @@ Page({
         // 判断用户是否选择了全部省份或全部城市
         let region = e.detail.value
         console.log(region);
-        if(region[0] == '全部' || region[1] == '全部'){
-            API.ShowModal('','请至少选择到指定市哦！',false)
-            region = ['江苏省','南京市','全部']
+        if (region[0] == '全部' || region[1] == '全部') {
+            API.ShowModal('', '请至少选择到指定市哦！', false)
+            region = ['江苏省', '南京市', '全部']
             this.setData({
                 region: region
             })
@@ -103,10 +91,14 @@ Page({
         // 获取风险地区列表
         RiskareaDB.getRiskareaList(...region).then(res => {
             // 如果没数据则展示
-            if (res.length == 0){
-                API.ShowToast('暂时没有数据','none');
-                region =  ['江苏省', '南京市', '全部']
+            if (res.length == 0) {
+                API.ShowToast('暂时没有数据', 'none');
+                region = ['江苏省', '南京市', '全部']
                 return
+            }
+            // 判断mapXtx是否存在_important
+            if (that.mapCtx == null || that.mapCtx == undefined) {
+                that.mapCtx = wx.createMapContext('myMap')
             }
             // 地图中心转移
             that.mapCtx.moveToLocation({
@@ -147,10 +139,14 @@ Page({
         wx.getLocation({
             type: 'wgs84'
         }).then(res => {
-            console.log(res);
+            // console.log(res);
             // 不需要实时渲染的数据，尽量不使用this.setData
             that.data.la = res.latitude
             that.data.ln = res.longitude
+            // 判断mapXtx是否存在_important
+            if (that.mapCtx == null || that.mapCtx == undefined) {
+                that.mapCtx = wx.createMapContext('myMap')
+            }
             // 移动位置
             return that.mapCtx.moveToLocation({
                 latitude: parseFloat(res.latitude),
@@ -160,11 +156,11 @@ Page({
             wx.hideLoading()
             that.setData({
                 notShowLabel: true,
-                scale: 15
+                scale: 12
             })
         }).catch(err => {
             wx.hideLoading()
-            API.ShowToast('定位失败', 'error')
+            API.ShowModal('定位失败', "请确认已打开定位功能!", false)
         })
     },
 
@@ -184,6 +180,10 @@ Page({
             r_level = "病例到访场所"
         } else {
             r_level = marker.risk_level + "地区"
+        }
+        // 判断mapXtx是否存在_important
+        if (that.mapCtx == null || that.mapCtx == undefined) {
+            that.mapCtx = wx.createMapContext('myMap')
         }
         // 移动视图中心
         this.mapCtx.moveToLocation({
@@ -217,22 +217,20 @@ Page({
             dis_obj.index = i
             dis_obj.address = marker[i].title
             dis_obj.distance = parseFloat(util.getDistance(parseFloat(this.data.la), parseFloat(this.data.ln), parseFloat(marker[i].latitude), parseFloat(marker[i].longitude)))
-            list_temp.push(dis_obj)
             dis_obj.markerId = marker[i].id
+            list_temp.push(dis_obj)
         }
         this.setData({
             distance_list: list_temp
         })
         // 排序
-        let property = "distance";
-        let self = this;
-        let arr = self.data.distance_list;
-        let sortRule = true; // 正序倒序
-        self.setData({
-            distance_list: arr.sort(self.compare(property, sortRule)).filter(function (x) {
+        let arr = this.data.distance_list;
+        this.setData({
+            distance_list: arr.sort(this.compare("distance", true)).filter(function (x) {
                 return x.distance <= 50
             })
         })
+        // 显示列表
         this.selectComponent('#bottomFrame').showFrame();
     },
 

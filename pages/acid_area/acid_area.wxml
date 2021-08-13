@@ -77,7 +77,7 @@
             <view wx:for="{{distance_list}}" wx:key="index">
                 <!-- 分割线 -->
                 <view class="divLine"></view>
-                <view bindtap='toMarker' data-item_index='{{item.index}}' class="distance_info">
+                <view bindtap='toMarker' data-marker_id="{{item.markerId}}" class="distance_info">
                     <text class="text">{{item.address}}</text>
                     <text class="text">{{item.distance}}km</text>
                 </view>
