@@ -69,7 +69,6 @@ Page({
         wx.navigateToMiniProgram({
           appId: 'wx10721f536f3e1af5',
           envVersion: 'release',
-          shortLink: "#小程序://苏服办/江苏政务/zWAyPk5TwnqjEeB"
         })
       }
     }],
@@ -89,7 +88,7 @@ Page({
   onLoad: function (options) {
     let that = this;
     // 获取五条最新的新闻信息
-    NewsDB.getNewsList(this.data.news.length, 3, 0).then(res => {
+    NewsDB.getNewsList(this.data.news.length, 3, 1, '江苏省').then(res => {
       that.setData({
         news: res
       })
