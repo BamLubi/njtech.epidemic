@@ -59,6 +59,11 @@ Page({
         // 设置用户所在地
         let province = app.globalData.userInfo.province
         let city = app.globalData.userInfo.city
+        // 添加默认条件
+        if (province == "" || province == null || city == "" || city == null){
+            province = "江苏省"
+            city = "南京市"
+        }
         this.setData({
             region: [province, city, '全部']
         })
@@ -98,9 +103,21 @@ Page({
     },
 
     /**
-     * 生命周期函数--监听页面初次渲染完成
+     * 移动到指定位置
+     * @param {*} latitude 
+     * @param {*} longitude 
      */
-    onReady: function () {},
+    moveToLocation: function (latitude, longitude) {
+        // 判断mapXtx是否存在_important
+        if (this.mapCtx == null || this.mapCtx == undefined) {
+            this.mapCtx = wx.createMapContext('myMap')
+        }
+        // 移动位置
+        return this.mapCtx.moveToLocation({
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude)
+        })
+    },
 
     /**
      * 选择想要查看的地区
@@ -131,27 +148,17 @@ Page({
                 region = ['江苏省', '南京市', '全部']
                 return
             }
-            // 判断mapXtx是否存在_important
-            if (that.mapCtx == null || that.mapCtx == undefined) {
-                that.mapCtx = wx.createMapContext('myMap')
-            }
-            // 地图中心转移
-            that.mapCtx.moveToLocation({
-                latitude: parseFloat(res[0].latitude),
-                longitude: parseFloat(res[0].longitude),
-            })
             that.setData({
                 markers: res,
                 hasMarkers: true,
-                scale: 12
+                scale: 12,
+                region: region
             })
+            // 移动位置
+            return that.moveToLocation(res[0].latitude, res[0].longitude)
         }).then(res => {
             // 隐藏loading框
             wx.hideLoading()
-            // 同步视图
-            this.setData({
-                region: region
-            })
         }).catch(err => {
             // 隐藏loading框
             wx.hideLoading()
@@ -178,15 +185,8 @@ Page({
             // 不需要实时渲染的数据，尽量不使用this.setData
             that.data.la = res.latitude
             that.data.ln = res.longitude
-            // 判断mapXtx是否存在_important
-            if (that.mapCtx == null || that.mapCtx == undefined) {
-                that.mapCtx = wx.createMapContext('myMap')
-            }
             // 移动位置
-            return that.mapCtx.moveToLocation({
-                latitude: parseFloat(res.latitude),
-                longitude: parseFloat(res.longitude),
-            })
+            return that.moveToLocation(res.latitude, res.longitude)
         }).then(res => {
             wx.hideLoading()
             that.setData({
@@ -194,8 +194,11 @@ Page({
                 scale: 12
             })
         }).catch(err => {
+            // 定位失败,则直接移动到markers的一个地点
             wx.hideLoading()
             API.ShowModal('定位失败', "请确认已打开定位功能!", false)
+            // 移动位置
+            that.moveToLocation(that.data.markers[0].latitude, that.data.markers[0].longitude)
         })
     },
 
@@ -216,20 +219,13 @@ Page({
         } else {
             r_level = marker.risk_level + "地区"
         }
-        // 判断mapXtx是否存在_important
-        if (that.mapCtx == null || that.mapCtx == undefined) {
-            that.mapCtx = wx.createMapContext('myMap')
-        }
-        // 移动视图中心
-        this.mapCtx.moveToLocation({
-            latitude: parseFloat(marker.latitude),
-            longitude: parseFloat(marker.longitude),
-        }).then(res => {
+        // 移动位置
+        that.moveToLocation(marker.latitude, marker.longitude).then(res => {
             that.setData({
                 // callout_id: e.detail.markerId,
                 address: marker.address,
                 title: marker.title,
-                distance: util.getDistance(parseFloat(this.data.la), parseFloat(this.data.ln), parseFloat(marker.latitude), parseFloat(marker.longitude)),
+                distance: util.getDistance(parseFloat(that.data.la), parseFloat(that.data.ln), parseFloat(marker.latitude), parseFloat(marker.longitude)),
                 level: r_level,
                 notShowLabel: false,
                 scale: 15
@@ -242,8 +238,10 @@ Page({
      * 进行距离计算排序
      */
     popup() {
-        //流氓一波
-        this.locate()
+        // 如果没有用户的位置则不显示
+        if (this.data.la == "" || this.data.la == null || this.data.la == undefined) {
+            return this.locate()
+        }
         let marker = this.data.markers
         let list_temp = []
         // 获取每个点到当前位置的距离

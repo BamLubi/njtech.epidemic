@@ -62,6 +62,14 @@ Page({
     // 设置用户所在地
     let province = app.globalData.userInfo.province
     let city = app.globalData.userInfo.city
+    // 添加默认条件
+    if (province == "" || province == null || city == "" || city == null) {
+      province = "江苏省"
+      city = "南京市"
+    }
+    if (city == "" || city == null) {
+      city = "南京市"
+    }
     this.setData({
       region: [province, city, '全部']
     })
@@ -100,9 +108,21 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 移动到指定位置
+   * @param {*} latitude 
+   * @param {*} longitude 
    */
-  onReady: function () {},
+  moveToLocation: function (latitude, longitude) {
+    // 判断mapXtx是否存在_important
+    if (this.mapCtx == null || this.mapCtx == undefined) {
+      this.mapCtx = wx.createMapContext('myMap')
+    }
+    // 移动位置
+    return this.mapCtx.moveToLocation({
+      latitude: parseFloat(latitude),
+      longitude: parseFloat(longitude)
+    })
+  },
 
   /**
    * 选择想要查看的地区
@@ -133,27 +153,17 @@ Page({
         region = ['江苏省', '南京市', '全部']
         return
       }
-      // 判断mapXtx是否存在_important
-      if (that.mapCtx == null || that.mapCtx == undefined) {
-        that.mapCtx = wx.createMapContext('myMap')
-      }
-      // 地图中心转移
-      that.mapCtx.moveToLocation({
-        latitude: parseFloat(res[0].latitude),
-        longitude: parseFloat(res[0].longitude),
-      })
       that.setData({
         markers: res,
         hasMarkers: true,
-        scale: 12
+        scale: 12,
+        region: region
       })
+      // 移动位置
+      return that.moveToLocation(res[0].latitude, res[0].longitude)
     }).then(res => {
       // 隐藏loading框
       wx.hideLoading()
-      // 同步视图
-      this.setData({
-        region: region
-      })
     }).catch(err => {
       // 隐藏loading框
       wx.hideLoading()
@@ -175,19 +185,12 @@ Page({
     wx.getLocation({
       type: 'wgs84'
     }).then(res => {
-      console.log(res);
+      // console.log(res);
       // 不需要实时渲染的数据，尽量不使用this.setData
       that.data.la = res.latitude
       that.data.ln = res.longitude
-      // 判断mapXtx是否存在_important
-      if (that.mapCtx == null || that.mapCtx == undefined) {
-        that.mapCtx = wx.createMapContext('myMap')
-      }
       // 移动位置
-      return that.mapCtx.moveToLocation({
-        latitude: parseFloat(res.latitude),
-        longitude: parseFloat(res.longitude),
-      })
+      return that.moveToLocation(res.latitude, res.longitude)
     }).then(res => {
       wx.hideLoading()
       that.setData({
@@ -195,8 +198,11 @@ Page({
         scale: 12
       })
     }).catch(err => {
+      // 定位失败,则直接移动到markers的一个地点
       wx.hideLoading()
       API.ShowModal('定位失败', "请确认已打开定位功能!", false)
+      // 移动位置
+      that.moveToLocation(that.data.markers[0].latitude, that.data.markers[0].longitude)
     })
   },
 
@@ -210,15 +216,8 @@ Page({
       return x.id == e.detail.markerId;
     })[0];
     console.log(marker);
-    // 判断mapXtx是否存在_important
-    if (this.mapCtx == null || this.mapCtx == undefined) {
-      this.mapCtx = wx.createMapContext('myMap')
-    }
     // 移动视图中心
-    this.mapCtx.moveToLocation({
-      latitude: parseFloat(marker.latitude),
-      longitude: parseFloat(marker.longitude),
-    });
+    this.moveToLocation(marker.latitude, marker.longitude)
     // 设置显示信息
     this.setData({
       address: marker.address,
@@ -235,6 +234,10 @@ Page({
    * 进行距离计算排序
    */
   popup() {
+    // 如果没有用户的位置则不显示
+    if (this.data.la == "" || this.data.la == null || this.data.la == undefined) {
+      return this.locate()
+    }
     let marker = this.data.markers
     var list_temp = []
     // 获取每个点到当前位置的距离
@@ -334,7 +337,7 @@ Page({
   name: function (res) {
     // console.log(res.currentTarget.dataset.index);
     var index = res.currentTarget.dataset.index;
-    let marker = that.data.markers[index];
+    let marker = this.data.markers[index];
     this.setData({
       inputVal: marker.title,
       viewShowed: false,
@@ -345,15 +348,8 @@ Page({
       notShowLabel: false,
       tele: marker.tel
     })
-    // 判断mapXtx是否存在_important
-    if (this.mapCtx == null || this.mapCtx == undefined) {
-      this.mapCtx = wx.createMapContext('myMap')
-    }
     //移动试图到搜索到的点
-    this.mapCtx.moveToLocation({
-      latitude: parseFloat(marker.latitude),
-      longitude: parseFloat(marker.longitude),
-    });
+    this.moveToLocation(marker.latitude, marker.longitude)
   },
 
   // 隐藏信息框
