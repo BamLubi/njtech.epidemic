@@ -45,7 +45,7 @@ Page({
       id: 3,
       name: '病例轨迹',
       src: '/images/index/guiji.png',
-      path: '',
+      path: '/pages/patient_trajectory/patient_trajectory',
       type: 'page'
     }, {
       id: 4,

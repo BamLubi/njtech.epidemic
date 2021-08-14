@@ -1,0 +1,51 @@
+<!--pages/patient_trajectory/patient_trajectory.wxml-->
+<view style="display: flex;flex-direction:column-reverse;">
+  <van-collapse value="{{activeNames}}" bind:change="onChange" wx:for="{{group}}" wx:for-item="trajectory">
+    <!-- 卡片 -->
+    <view class="radius margin shadow bg-white">
+      <!-- 折叠框 -->
+      <van-collapse-item name="{{index}}">
+        <!-- 标题 -->
+        <view slot="title" class="flex-row"
+          style="display: flex;flex-direction: row;justify-content:space-between;align-items: center;">
+          <view class="flex-row" style="display: flex;flex-direction: row; align-items: center; ">
+            <view wx:if="{{trajectory[0].date>20210803}}" class="cu-tag bg-red" style="margin-right: 10rpx;">最新</view>
+            <view>
+              确诊病例 {{trajectory[0].ud_id}}
+            </view>
+          </view>
+          <!-- 打开地图模态框按钮 -->
+          <image src="../patient_trajectory/map.png" bindtap="showMap" data-trajectory="{{trajectory}}"
+            style="margin-right: 20rpx; width: 30rpx;height: 30rpx;"></image>
+        </view>
+        <!-- 时间线 -->
+        <scroll-view scroll-y="true" style="height: 520rpx;">
+          <view wx:for="{{trajectory}}" wx:key="flag">
+            <view class="cu-timeline">
+              <view class="cu-time">{{item.pass_date}}</view>
+              <view class="cu-item text-blue">
+                <view class="content bg-blue shadow-warp">
+                  {{item.ch_name}}
+                </view>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </van-collapse-item>
+    </view>
+  </van-collapse>
+</view>
+<!-- 模态框 -->
+<view class="cu-modal {{modalName=='Modal'?'show':''}}">
+  <view class="cu-dialog" style="width: 700rpx; height:500rpx;">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">轨迹地图</view>
+      <view class="action" bindtap="hideMap">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view>
+      <map markers="{{markers}}" polyline="{{polyline}}" scale="{{scale}}" id="myMap" show-location="true" style="width: 700rpx;height: 400rpx;"></map>
+    </view>
+  </view>
+</view>

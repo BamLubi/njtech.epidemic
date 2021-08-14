@@ -4,7 +4,8 @@
         "pages/news/news",
         "pages/news_detail/news_detail",
         "pages/risk_area/risk_area",
-        "pages/acid_area/acid_area"
+        "pages/acid_area/acid_area",
+        "pages/patient_trajectory/patient_trajectory"
     ],
     "window": {
         "backgroundColor": "#F6F6F6",
