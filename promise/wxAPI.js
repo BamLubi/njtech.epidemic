@@ -137,6 +137,7 @@ function GetUserInfo() {
     //return Promise Object
     return new Promise(function (resolve, reject) {
         wx.getUserInfo({
+            lang: "zh_CN",
             success: res => {
                 console.log("[wxAPI] [获取用户信息] success: ", res.userInfo)
                 // console.log({
