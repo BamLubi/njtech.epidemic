@@ -6,7 +6,8 @@ App({
     locate_log: "",
     level: [],
     userInfo: null,
-    hasUserInfo: false
+    hasUserInfo: false,
+    hasAskedUser: false
   },
   onLaunch: function (options) {
     let that = this

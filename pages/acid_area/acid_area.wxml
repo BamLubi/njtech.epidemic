@@ -1,8 +1,7 @@
 <!--pages/risk_area/risk_area.wxml-->
 <view class="map">
     <!-- 地图 -->
-    <map wx:if="{{hasMarkers}}" style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}"
-        bindmarkertap="markertap" bindtap="hideLabel" scale="{{scale}}" show-location="true">
+    <map style="width: 100vw;height: 100vh;" id="myMap" markers="{{markers}}" bindmarkertap="markertap" bindtap="hideLabel" scale="{{scale}}" show-location longitude="{{ln}}" latitude="{{la}}">
     </map>
     <!-- 顶部工具栏 -->
     <view class="top_box cu-bar search bg-white shadow shadow-lg bg-white">
