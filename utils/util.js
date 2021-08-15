@@ -22,12 +22,12 @@ function createPoit(id, latitude, longitude, title, type) {
   this.title = title;
   if (type == 0) { //高风险
     this.iconPath = '/images/定位.png'
-    this.width = "30"
-    this.height = "30"
+    this.width = "50"
+    this.height = "50"
   } else if (type == 1) { //中风险
     this.iconPath = '/images/location.png'
-    this.width = "30"
-    this.height = "30"
+    this.width = "40"
+    this.height = "40"
   } else {
     this.iconPath = '/images/足迹.png'
     this.width = "20"
