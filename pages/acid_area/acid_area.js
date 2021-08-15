@@ -311,7 +311,7 @@ Page({
       distance: util.getDistance(parseFloat(that.data.userLa), parseFloat(that.data.userLn), parseFloat(marker.latitude), parseFloat(marker.longitude)),
       notShowLabel: false,
       tele: marker.tel,
-      scale: 15
+      scale: 14
     })
   },
 
@@ -427,7 +427,7 @@ Page({
     this.setData({
       inputVal: marker.title,
       viewShowed: false,
-      scale: 15,
+      scale: 14,
       address: marker.address,
       title: marker.title,
       distance: util.getDistance(parseFloat(this.data.userLa), parseFloat(this.data.userLn), parseFloat(marker.latitude), parseFloat(marker.longitude)),

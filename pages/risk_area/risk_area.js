@@ -315,7 +315,7 @@ Page({
             distance: util.getDistance(parseFloat(that.data.userLa), parseFloat(that.data.userLn), parseFloat(marker.latitude), parseFloat(marker.longitude)),
             level: r_level,
             notShowLabel: false,
-            scale: 15
+            scale: 14
         })
     },
 
