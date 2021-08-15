@@ -33,7 +33,7 @@ function getAcidareaList(province = '江苏省', city = '南京市', district = 
                 // 如果经纬度超过范围或者为空则跳过
                 if (!isLegalCoor(item["lat"], item["lng"])) continue;
                 // 构造marker数据
-                var point = new Util.createPoit(item["flag"], item["lat"], item["lng"], item["name"], 0);
+                var point = new Util.createPoit(item["flag"], item["lat"], item["lng"], item["name"], 1);
                 point.address = item["address"];
                 point.tel = item["tel"];
                 _markers.push(point);
