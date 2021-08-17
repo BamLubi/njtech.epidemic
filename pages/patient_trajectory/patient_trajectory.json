@@ -1,8 +1,9 @@
 {
   "navigationBarTitleText":"病例轨迹",
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 1,
   "usingComponents": {
     "van-collapse": "../../components/vantui/collapse/index",
-    "van-collapse-item": "../../components/vantui/collapse-item/index",
-    "van-icon": "../../components/vantui/icon/index"
+    "van-collapse-item": "../../components/vantui/collapse-item/index"
   }
 }
