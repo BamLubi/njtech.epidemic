@@ -45,23 +45,17 @@
       </van-collapse-item>
     </view>
   </van-collapse>
+  <!-- 显示更多信息 -->
+  <view>
+    <view wx:if="{{!hasMorePatient}}" class="cu-load over" />
+    <view wx:elif="{{isLoading}}" class="cu-load loading" />
+    <view wx:else class="cu-load text-center text-black">上拉加载更多</view>
+  </view>
 </view>
+<!-- 地图模态框 -->
 <van-popup show="{{ show }}" closeable close-icon-position="top-right" bind:close="hideMap">
   <view>
     <map markers="{{markers}}" polyline="{{polyline}}" scale="{{scale}}" id="myMap" show-location="true"
       style="width: 700rpx;height: 400rpx;"></map>
   </view>
 </van-popup>
-<!-- 模态框 -->
-<!-- <view class="cu-modal {{modalName=='Modal'?'show':''}}">
-    <view class="cu-bar bg-white justify-end">
-      <view class="content">轨迹地图</view>
-      <view class="action" bindtap="hideMap">
-        <text class="cuIcon-close text-red"></text>
-      </view>
-    </view>
-    <view>
-      <map markers="{{markers}}" polyline="{{polyline}}" scale="{{scale}}" id="myMap" show-location="true"
-        style="width: 700rpx;height: 400rpx;"></map>
-    </view>
-</view> -->
