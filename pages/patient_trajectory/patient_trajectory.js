@@ -23,7 +23,8 @@ Page({
     //最新确诊时间
     confirmedDate: 0,
     isLoading: false,
-    hasMorePatient: true
+    hasMorePatient: true,
+    show: false
   },
   onChange(event) {
     this.setData({
@@ -86,7 +87,7 @@ Page({
       region: [province, city, '全部']
     })
     // 2. 获取病例轨迹
-    that.getTrajectoryList([province, city, '全部'],0);
+    that.getTrajectoryList([province, city, '全部'], 0);
   },
   /**
    * 选择想要查看的地区
@@ -109,15 +110,15 @@ Page({
       return
     }
     //type=1 换地区查询模式，需要先清空group
-    let type=1;
-    that.getTrajectoryList(region,type)
+    let type = 1;
+    that.getTrajectoryList(region, type)
   },
   /**
    * 获取病例轨迹列表
    */
-  getTrajectoryList: function (region,type) {
+  getTrajectoryList: function (region, type) {
     let that = this;
-    let num = 3;
+    let num = 10;
     // 显示loading框
     wx.showLoading({
       title: '加载中',
@@ -126,9 +127,9 @@ Page({
       isLoading: true
     })
     // 获取病例轨迹列表
-    let length=0;
-    if(type==0){
-      length=this.data.group.length
+    let length = 0;
+    if (type == 0) {
+      length = this.data.group.length
     }
     return TrajectoryDB.getTrajectoryList(length, num, region[0], region[1]).then(res => {
       // 如果没数据则展示
@@ -144,12 +145,14 @@ Page({
       } else {
         // 隐藏loading框
         wx.hideLoading()
-        if(type==1){
+        if (type == 1) {
           that.setData({
-            hasMorePatient:true,
-            group:[]
+            hasMorePatient: true,
+            group: [],
+            activeNames:[0,1]
           })
         }
+        //当打开界面第一次获取数据，或者是切换地区
         if (this.data.group == "") {
           that.setData({
             //获取最近确诊时间并赋值
@@ -178,15 +181,6 @@ Page({
     })
   },
   /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-    // 获取轨迹
-    this.getTrajectoryList(this.data.region,0).then(res => {
-      wx.stopPullDownRefresh()
-    })
-  },
-  /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
@@ -194,7 +188,7 @@ Page({
     if (!this.data.hasMorePatient) return;
     // 节流
     if (!this.data.isLoading) {
-      this.getTrajectoryList(this.data.region,0);
+      this.getTrajectoryList(this.data.region, 0);
     }
   },
   /**
@@ -220,8 +214,8 @@ Page({
     })
 
     this.setData({
-      modalName: "Modal",
       markers: _markers,
+      show: true
     })
     //如果只有一个有效点，则不画轨迹
     if (_polyline.length != 1) {
@@ -241,10 +235,10 @@ Page({
    */
   hideMap(e) {
     this.setData({
-      modalName: null
+      show: false
     })
   },
-    /**
+  /**
    * 判断省份、直辖市、自治区的具体名称
    * @param {*} target 
    */

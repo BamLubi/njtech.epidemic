@@ -9,7 +9,8 @@
   </view>
 </view>
 <view style="display: flex;flex-direction:column;">
-  <van-collapse value="{{activeNames}}" bind:change="onChange" wx:for="{{group}}" wx:key="index" wx:for-item="trajectory">
+  <van-collapse value="{{activeNames}}" bind:change="onChange" wx:for="{{group}}" wx:key="index"
+    wx:for-item="trajectory">
     <!-- 卡片 -->
     <view class="radius margin shadow bg-white">
       <!-- 折叠框 -->
@@ -18,7 +19,8 @@
         <view slot="title" class="flex-row"
           style="display: flex;flex-direction: row;justify-content:space-between;align-items: center;">
           <view class="flex-row" style="display: flex;flex-direction: row; align-items: center; ">
-            <view wx:if="{{trajectory[0].date>=confirmedDate}}" class="cu-tag bg-red" style="margin-right: 10rpx;">最新</view>
+            <view wx:if="{{trajectory[0].date>=confirmedDate}}" class="cu-tag bg-red" style="margin-right: 10rpx;">最新
+            </view>
             <view>
               确诊病例 {{trajectory[0].ud_id}}
             </view>
@@ -43,16 +45,15 @@
       </van-collapse-item>
     </view>
   </van-collapse>
-  <!-- 显示更多信息 -->
-  <view>
-    <view wx:if="{{!hasMorePatient}}" class="cu-load over" />
-    <view wx:elif="{{isLoading}}" class="cu-load loading" />
-    <view wx:else class="cu-load text-center text-black">上拉加载更多</view>
-  </view>
 </view>
+<van-popup show="{{ show }}" closeable close-icon-position="top-right" bind:close="hideMap">
+  <view>
+    <map markers="{{markers}}" polyline="{{polyline}}" scale="{{scale}}" id="myMap" show-location="true"
+      style="width: 700rpx;height: 400rpx;"></map>
+  </view>
+</van-popup>
 <!-- 模态框 -->
-<view class="cu-modal {{modalName=='Modal'?'show':''}}">
-  <view class="cu-dialog" style="width: 700rpx; height:500rpx;">
+<!-- <view class="cu-modal {{modalName=='Modal'?'show':''}}">
     <view class="cu-bar bg-white justify-end">
       <view class="content">轨迹地图</view>
       <view class="action" bindtap="hideMap">
@@ -63,5 +64,4 @@
       <map markers="{{markers}}" polyline="{{polyline}}" scale="{{scale}}" id="myMap" show-location="true"
         style="width: 700rpx;height: 400rpx;"></map>
     </view>
-  </view>
-</view>
+</view> -->
