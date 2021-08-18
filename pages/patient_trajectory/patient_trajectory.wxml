@@ -26,7 +26,7 @@
             </view>
           </view>
           <!-- 打开地图模态框按钮 -->
-          <image src="../patient_trajectory/map.png" bindtap="showMap" data-trajectory="{{trajectory}}"
+          <image src="../patient_trajectory/map.png" catchtap="showMap" data-trajectory="{{trajectory}}"
             style="margin-right: 20rpx; width: 30rpx;height: 30rpx;"></image>
         </view>
         <!-- 时间线 -->
@@ -56,6 +56,6 @@
 <van-popup show="{{ show }}" closeable close-icon-position="top-right" bind:close="hideMap">
   <view>
     <map markers="{{markers}}" polyline="{{polyline}}" scale="{{scale}}" id="myMap" show-location="true"
-      style="width: 700rpx;height: 400rpx;"></map>
+      style="width: 700rpx;height: 550rpx;"></map>
   </view>
 </van-popup>
