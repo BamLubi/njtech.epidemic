@@ -229,6 +229,10 @@ Page({
             borderWidth: 2
           }]
         })
+      }else{
+        this.setData({
+          polyline:[]
+        })
       }
     }
   },
