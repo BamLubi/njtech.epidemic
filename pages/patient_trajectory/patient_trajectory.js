@@ -149,7 +149,7 @@ Page({
           that.setData({
             hasMorePatient: true,
             group: [],
-            activeNames:[0,1]
+            activeNames: [0, 1]
           })
         }
         //当打开界面第一次获取数据，或者是切换地区
@@ -205,29 +205,31 @@ Page({
       _markers.push(point);
       _polyline.push(point);
     }
-
-    // 移动视图
-    this.mapCtx = wx.createMapContext('myMap')
-    this.mapCtx.moveToLocation({
-      latitude: parseFloat(_markers[0].latitude),
-      longitude: parseFloat(_markers[0].longitude),
-    })
-
-    this.setData({
-      markers: _markers,
-      show: true
-    })
-    //如果只有一个有效点，则不画轨迹
-    if (_polyline.length != 1) {
-      this.setData({
-        polyline: [{
-          points: _polyline,
-          color: "#282c34",
-          width: 5,
-          arrowLine: true,
-          borderWidth: 2
-        }]
+    // 判断是否无有效点
+    if (_markers != "") {
+      // 移动视图
+      this.mapCtx = wx.createMapContext('myMap')
+      this.mapCtx.moveToLocation({
+        latitude: parseFloat(_markers[0].latitude),
+        longitude: parseFloat(_markers[0].longitude),
       })
+
+      this.setData({
+        markers: _markers,
+        show: true
+      })
+      //如果只有一个有效点，则不画轨迹
+      if (_polyline.length != 1) {
+        this.setData({
+          polyline: [{
+            points: _polyline,
+            color: "#282c34",
+            width: 5,
+            arrowLine: true,
+            borderWidth: 2
+          }]
+        })
+      }
     }
   },
   /**
