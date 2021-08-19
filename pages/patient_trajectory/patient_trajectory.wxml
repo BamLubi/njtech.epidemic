@@ -30,10 +30,10 @@
             style="margin-right: 20rpx; width: 30rpx;height: 30rpx;"></image>
         </view>
         <!-- 时间线 -->
-        <scroll-view scroll-y="true" style="max-height: 520rpx;">
-          <view wx:for="{{trajectory}}" wx:key="flag">
+        <scroll-view scroll-y="true" style="max-height: 530rpx;">
+          <view wx:for="{{trajectory}}" wx:key="flag" style="padding-bottom: 20rpx;">
             <view class="cu-timeline">
-              <view class="cu-time">{{item.pass_date}}</view>
+              <view class="cu-time" style="padding-top: 0rpx;">{{item.pass_date}}</view>
               <view class="cu-item text-blue" style="padding: 0rpx 30rpx 0rpx 120rpx;">
                 <view class="content bg-blue shadow-warp">
                   {{item.ch_name}}
