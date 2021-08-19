@@ -26,8 +26,10 @@
             </view>
           </view>
           <!-- 打开地图模态框按钮 -->
-          <image src="../patient_trajectory/map.png" catchtap="showMap" data-trajectory="{{trajectory}}"
-            style="margin-right: 20rpx; width: 30rpx;height: 30rpx;"></image>
+          <view catchtap="showMap" data-trajectory="{{trajectory}}"
+            style="padding:5rpx 30rpx 0rpx 30rpx; align-items: center;">
+            <image src="../patient_trajectory/map.png" style=" width: 30rpx;height: 30rpx;"></image>
+          </view>
         </view>
         <!-- 时间线 -->
         <scroll-view scroll-y="true" style="max-height: 530rpx;">
