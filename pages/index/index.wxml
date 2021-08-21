@@ -44,7 +44,8 @@
 <view class="banner">
   <scroll-view scroll-x scroll-with-animation scroll-into-view="nav-{{select > 0 ? select -1 : select}}">
     <view wx:for="{{province}}" wx:key="index" id="nav-{{index}}"
-      class="sort {{index == select ? 'choose text-bold' : 'text-gray'}}" data-pn="{{item.postName}}" data-index="{{index}}" bindtap="getSelect">
+      class="sort {{index == select ? 'choose text-bold' : 'text-gray'}}" data-pn="{{item.postName}}"
+      data-index="{{index}}" bindtap="getSelect">
       {{item.name}}
       <view class="line" wx:if="{{index == select}}"></view>
     </view>
@@ -57,6 +58,10 @@
 <!-- 概况数据 -->
 <view class="tools radius margin-left margin-right shadow-warp bg-white cu-list grid col-4">
   <view class="cu-item">
+    <view class="text-xl">{{cases.new}}</view>
+    <view class="text-sm">新增确诊</view>
+  </view>
+  <view class="cu-item">
     <view class="text-xl text-orange">{{cases.currentConfirmedCount}}</view>
     <view class="text-sm">现存确诊</view>
   </view>
@@ -64,10 +69,7 @@
     <view class="text-xl text-red">{{cases.confirmedCount}}</view>
     <view class="text-sm">累计确诊</view>
   </view>
-  <view class="cu-item">
-    <view class="text-xl">{{cases.deadCount}}</view>
-    <view class="text-sm">累计死亡</view>
-  </view>
+
   <view class="cu-item">
     <view class="text-xl text-green">{{cases.curedCount}}</view>
     <view class="text-sm">累计治愈</view>
@@ -82,18 +84,19 @@
   <!-- 表头 -->
   <view class="tr text-sm" style="background-color: #00b9f1;">
     <view class="th">城市</view>
+    <view class="th">新增确诊</view>
     <view class="th">现存确诊</view>
     <view class="th">累计确诊</view>
-    <view class="th">累计治愈</view>
     <view class="th">高风险地区</view>
     <view class="th">中风险地区</view>
   </view>
   <!-- 列表 -->
   <view wx:for="{{citycases}}" wx:key="index" class="tr {{index % 2 == 0?'bg-g':'bg-w'}}">
     <view class="td {{item.currentConfirmedCount!=0?'text-bold':''}}">{{item.cityName}}</view>
-    <view class="td {{item.currentConfirmedCount!=0?'text-orange text-bold':'text-gray'}}">{{item.currentConfirmedCount}}</view>
+    <view class="td {{item.new!=0?'text-blue text-bold':'text-gray'}}">{{item.new}}</view>
+    <view class="td {{item.currentConfirmedCount!=0?'text-orange text-bold':'text-gray'}}">
+      {{item.currentConfirmedCount}}</view>
     <view class="td">{{item.confirmedCount}}</view>
-    <view class="td text-green">{{item.curedCount}}</view>
     <view class="td {{item.highDangerCount!=0?'text-red text-bold':'text-gray'}}">{{item.highDangerCount}}</view>
     <view class="td {{item.midDangerCount!=0?'text-yellow text-bold':'text-gray'}}">{{item.midDangerCount}}</view>
   </view>
